@@ -11,7 +11,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import SyncPage from './pages/SyncPage';
 import { Language, ConfiguratorItem, BrandConfig, Service } from './types';
 import { initGA, trackPageView } from './services/analytics';
-import { getBrandConfig } from './services/supabaseMock';
+// IMPORTANT: Assegura't que existeix la carpeta hooks/ amb el fitxer
+import { useBrandConfigWithCache } from './hooks/useBrandConfigWithCache';
 import { Lock } from 'lucide-react';
 
 // Component to handle route tracking
@@ -145,48 +146,12 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
 
 const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('es');
-  const [brandConfig, setBrandConfig] = useState<BrandConfig>({
-      siteName: '',
-      favicon: '',
-      navLogo: '/logo-blue.png',
-      footerLogo: '/logo-white.png',
-      contactEmail: 'contact@eportstech.com',
-      contactPhone: '+34 900 123 456',
-      hero: {
-          image: '/hq-background.jpg',
-          overlayOpacity: 0.6,
-          title: { es: '', ca: '', en: '', fr: '', de: '', it: '' },
-          subtitle: { es: '', ca: '', en: '', fr: '', de: '', it: '' },
-          ctaText: { es: '', ca: '', en: '', fr: '', de: '', it: '' },
-          imagePosition: 'center'
-      },
-      benefits: {
-        mainTitle: { es: '', ca: '', en: '', fr: '', de: '', it: '' },
-        subtitle: { es: '', ca: '', en: '', fr: '', de: '', it: '' },
-        items: []
-      },
-      footer: {
-         copyrightText: { es: '', ca: '', en: '', fr: '', de: '', it: '' },
-         privacyText: { es: '', ca: '', en: '', fr: '', de: '', it: '' },
-         legalText: { es: '', ca: '', en: '', fr: '', de: '', it: '' },
-         cookiesText: { es: '', ca: '', en: '', fr: '', de: '', it: '' }
-      }
-  });
+  
+  // ✅ NOU: Usar hook amb cache intel·ligent en lloc de fetch cada segon
+  const { brandConfig, isLoading } = useBrandConfigWithCache();
 
   useEffect(() => {
     initGA();
-    const loadSettings = async () => {
-        try {
-          const config = await getBrandConfig();
-          setBrandConfig(config);
-        } catch (e) {
-          console.error("Failed to load brand config", e);
-        }
-    };
-    loadSettings();
-    
-    const interval = setInterval(loadSettings, 1000); 
-    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -204,6 +169,15 @@ const App: React.FC = () => {
       link.href = brandConfig.favicon;
     }
   }, [brandConfig.siteName, brandConfig.favicon]);
+
+  // Opcional: mostrar loading skeleton mentre carrega
+  if (isLoading && !brandConfig.siteName) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-pulse text-gray-400">Carregant...</div>
+      </div>
+    );
+  }
 
   return (
     <HashRouter>
