@@ -28,18 +28,18 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    console.log('📤 [Update Brand Config] Updating entire config object...');
+    console.log('📤 [Update Brand Config] Updating...');
 
-    // Guardar TODO el config como un objeto, sin intentar acceder a columnas individuales
+    // Usar lowercase para las columnas
     const { error } = await supabase
       .from('brand_config')
       .update({
-        siteName: config.siteName,
+        sitename: config.siteName,
         favicon: config.favicon,
-        navLogo: config.navLogo,
-        footerLogo: config.footerLogo,
-        contactEmail: config.contactEmail,
-        contactPhone: config.contactPhone,
+        navlogo: config.navLogo,
+        footerlogo: config.footerLogo,
+        contactemail: config.contactEmail,
+        contactphone: config.contactPhone,
         hero: config.hero,
         benefits: config.benefits,
         footer: config.footer,
