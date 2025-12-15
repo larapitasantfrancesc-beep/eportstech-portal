@@ -1,13 +1,8 @@
 import { Handler } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
 
-// IMPORTANTE: Usar process.env.VITE_* para Netlify
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
-
-console.log('🔍 Env check:');
-console.log('URL:', supabaseUrl ? '✓ present' : '✗ MISSING');
-console.log('Service Key:', supabaseServiceKey ? '✓ present' : '✗ MISSING');
 
 const supabase = createClient(supabaseUrl!, supabaseServiceKey!);
 
@@ -33,11 +28,23 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    console.log('📤 [Update Brand Config] Updating...');
+    console.log('📤 [Update Brand Config] Updating entire config object...');
 
+    // Guardar TODO el config como un objeto, sin intentar acceder a columnas individuales
     const { error } = await supabase
       .from('brand_config')
-      .update(config)
+      .update({
+        siteName: config.siteName,
+        favicon: config.favicon,
+        navLogo: config.navLogo,
+        footerLogo: config.footerLogo,
+        contactEmail: config.contactEmail,
+        contactPhone: config.contactPhone,
+        hero: config.hero,
+        benefits: config.benefits,
+        footer: config.footer,
+        updated_at: new Date().toISOString()
+      })
       .eq('id', 1);
 
     if (error) {
