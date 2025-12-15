@@ -41,7 +41,6 @@ export const handler: Handler = async (event) => {
 
     console.log('📤 [Auth Login] Attempting login for:', email);
 
-    // Use SERVICE_ROLE_KEY to authenticate
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,

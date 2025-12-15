@@ -1,8 +1,13 @@
 import { Handler } from '@netlify/functions';
 import { createClient } from '@supabase/supabase-js';
 
+// IMPORTANTE: Usar process.env.VITE_* para Netlify
 const supabaseUrl = process.env.VITE_SUPABASE_URL;
 const supabaseServiceKey = process.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+
+console.log('🔍 Env check:');
+console.log('URL:', supabaseUrl ? '✓ present' : '✗ MISSING');
+console.log('Service Key:', supabaseServiceKey ? '✓ present' : '✗ MISSING');
 
 const supabase = createClient(supabaseUrl!, supabaseServiceKey!);
 
