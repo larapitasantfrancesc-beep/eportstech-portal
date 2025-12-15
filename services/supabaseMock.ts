@@ -149,31 +149,27 @@ export const updateBrandConfig = async (config: Partial<BrandConfig>, files?: Re
   }
 
   try {
-    console.log('📤 [updateBrandConfig] Updating with config:', updatedConfig);
+    console.log('📤 [updateBrandConfig] Calling backend function...');
     
-    const { error } = await supabase
-      .from('brand_config')
-      .update({
-        siteName: updatedConfig.siteName,
-        favicon: updatedConfig.favicon,
-        navLogo: updatedConfig.navLogo,
-        footerLogo: updatedConfig.footerLogo,
-        contactEmail: updatedConfig.contactEmail,
-        contactPhone: updatedConfig.contactPhone,
-        hero: updatedConfig.hero,
-        benefits: updatedConfig.benefits,
-        footer: updatedConfig.footer,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', 1);
+    const response = await fetch('/.netlify/functions/update-brand-config', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        config: updatedConfig,
+      }),
+    });
 
-    if (error) {
-      console.error('❌ Update error:', error);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('❌ Update failed:', errorData.error);
       return false;
     }
 
-    console.log('✅ Brand config updated');
-    return true;
+    const data = await response.json();
+    console.log('✅ Brand config updated via backend');
+    return data.success;
   } catch (error) {
     console.error('❌ Update exception:', error);
     return false;
