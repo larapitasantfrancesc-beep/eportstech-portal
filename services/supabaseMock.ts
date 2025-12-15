@@ -148,16 +148,32 @@ export const updateBrandConfig = async (config: Partial<BrandConfig>, files?: Re
       }
   }
 
-  const { error } = await supabase
-    .from('brand_config')
-    .update(updatedConfig)
-    .eq('id', 1);
+  try {
+    console.log('📤 [updateBrandConfig] Calling backend...');
+    
+    const response = await fetch('/.netlify/functions/update-brand-config', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        config: updatedConfig,
+      }),
+    });
 
-  if (error) {
-      console.error("Error updating brand config:", error);
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('❌ Update failed:', errorData.error);
       return false;
+    }
+
+    const data = await response.json();
+    console.log('✅ Brand config updated');
+    return data.success;
+  } catch (error) {
+    console.error('❌ Update exception:', error);
+    return false;
   }
-  return true;
 };
 
 export const getServices = async (): Promise<Service[]> => {
