@@ -5,9 +5,10 @@
 [build.environment]
   NODE_VERSION = "18"
   VITE_SUPABASE_URL = "https://hwggbvxxtfjitfjbtmzl.supabase.co"
-  VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3Z2didnh4dGZqaXRmamJ0bXpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQyMTY1MTIsImV4cCI6MjA0OTc5MjUxMn0.SWWU5tpdwk6GHh0VK82qUqIujRo_XLfk2BXgeIfuj-U"
+  VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3Z2didnh4dGZqaXRmamJ0bXpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4MDc1ODIsImV4cCI6MjA4MTM4MzU4Mn0.SWWU5tpdwk6GHh0VK82qUqIujRo_XLfk2BXgeIfuj-U"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+  
