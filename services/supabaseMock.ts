@@ -94,8 +94,34 @@ export const getBrandConfig = async (): Promise<BrandConfig> => {
     .single();
 
   if (error || !data) {
-    console.warn("Could not fetch brand config", error);
-    // ... fallback per defecte
+    console.warn("Could not fetch brand config (using defaults/mock temporarily)", error);
+    return {
+        siteName: "EportsTech",
+        favicon: "",
+        navLogo: '/logo-blue.png',
+        footerLogo: '/logo-white.png',
+        contactEmail: 'contact@eportstech.com',
+        contactPhone: '+34 900 123 456',
+        hero: {
+            image: '/hq-background.jpg',
+            imagePosition: 'center',
+            overlayOpacity: 0.6,
+            title: TRANSLATIONS.heroTitle,
+            subtitle: TRANSLATIONS.heroSubtitle,
+            ctaText: TRANSLATIONS.ctaButton
+        },
+        benefits: {
+            mainTitle: TRANSLATIONS.benefitsTitle,
+            subtitle: TRANSLATIONS.benefitsSubtitle,
+            items: []
+        },
+        footer: {
+            copyrightText: { es: "© 2024", ca: "© 2024", en: "© 2024", fr: "© 2024", de: "© 2024", it: "© 2024" },
+            privacyText: { es: "Privacidad", ca: "Privacitat", en: "Privacy", fr: "Confidentialité", de: "Datenschutz", it: "Privacy" },
+            legalText: { es: "Legal", ca: "Legal", en: "Legal", fr: "Légal", de: "Rechtlich", it: "Legale" },
+            cookiesText: { es: "Cookies", ca: "Cookies", en: "Cookies", fr: "Cookies", de: "Cookies", it: "Cookies" }
+        }
+    };
   }
 
   // 🔧 MAPPING: lowercase (BD) → camelCase (codi)
@@ -242,6 +268,23 @@ export const deleteConfiguratorItem = async (id: string): Promise<boolean> => {
 
 export const getCustomSections = async (): Promise<DynamicSection[]> => {
   return [];
+};
+
+// ✅ NOU: Obtenir leads generals
+export const getLeads = async (): Promise<LeadForm[]> => {
+  console.log('📤 [getLeads] Fetching from Supabase...');
+  const { data, error } = await supabase
+    .from('leads')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('❌ [getLeads] Error:', error);
+    return [];
+  }
+
+  console.log('✅ [getLeads] Loaded', data?.length || 0, 'leads from Supabase');
+  return (data || []) as LeadForm[];
 };
 
 export const submitLead = async (data: LeadForm): Promise<{ success: boolean; error?: string }> => {

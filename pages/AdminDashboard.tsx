@@ -4,7 +4,7 @@ import {
   loginMock, logoutMock, checkAuth, getBrandConfig, updateBrandConfig, 
   getConfiguratorLeads, getNotificationSettings, updateNotificationSettings,
   getServices, updateServices, getConfiguratorItems, saveConfiguratorItem, deleteConfiguratorItem, updateConfiguratorItemsOrder,
-  getCustomSections, getBotConfig, updateBotConfig
+  getCustomSections, getBotConfig, updateBotConfig, getLeads, deleteLead
 } from '../services/supabaseMock';
 import { 
   FileText, Settings, LogOut, Users, Database, Image as ImageIcon, Upload, Save, 
@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { LeadForm, BrandConfig, ConfiguratorLead, NotificationSettings, Service, ConfiguratorItem, Language, DynamicSection, ServiceCategory, BotConfig } from '../types';
 import { SUPPORTED_LANGUAGES } from '../constants';
+
 
 const AdminDashboard: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -99,8 +100,9 @@ const AdminDashboard: React.FC = () => {
   }, [isAuthenticated]);
 
   const loadAllData = async () => {
-      // Mock Leads (Replace with DB call if you make a leads table)
-      setMockLeads([]); 
+      // ✅ MODIFICAT: Carregar leads reals de Supabase
+      const leadsData = await getLeads();
+      setMockLeads(leadsData);
 
       const confLeads = await getConfiguratorLeads();
       setConfiguratorLeads(confLeads);
@@ -1356,19 +1358,113 @@ const AdminDashboard: React.FC = () => {
         )}
 
         {/* ... (Leads Center and Custom Packs Leads remain same) ... */}
-        {/* === LEADS CENTER === */}
+                {/* === LEADS CENTER === */}
         {activeTab === 'leads' && (
           <div className="animate-fade-in">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Leads Generales</h2>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                {/* Real Leads Implementation pending DB population */}
-              <div className="p-8 text-center text-gray-500">
-                  <p>Conecta tu base de datos Supabase para ver los leads reales.</p>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <Users className="text-primary-600" /> Leads Generales
+              <span className="text-sm font-normal text-gray-500">({mockLeads.length} total)</span>
+            </h2>
+            
+            {mockLeads.length === 0 ? (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+                <Mail size={48} className="mx-auto mb-4 text-gray-300" />
+                <p>No hay leads todavía.</p>
+                <p className="text-sm mt-2">Los leads aparecerán aquí cuando alguien complete el formulario de contacto.</p>
               </div>
-            </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Teléfono</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Empresa</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Servicio</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {mockLeads.map((lead: any) => (
+                        <tr key={lead.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="font-medium text-gray-900">{lead.fullName}</div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <a href={`mailto:${lead.email}`} className="text-primary-600 hover:text-primary-800">
+                              {lead.email}
+                            </a>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                            {lead.phone || '-'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                            {lead.company || '-'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="px-2 py-1 text-xs font-medium bg-primary-100 text-primary-800 rounded-full">
+                              {lead.serviceInterest || 'General'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
+                            {lead.created_at ? new Date(lead.created_at).toLocaleDateString('es-ES', {
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            }) : '-'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <button 
+                              onClick={async () => {
+                                if (confirm('¿Eliminar este lead?')) {
+                                  const success = await deleteLead(lead.id);
+                                  if (success) {
+                                    setMockLeads(mockLeads.filter((l: any) => l.id !== lead.id));
+                                  }
+                                }
+                              }}
+                              className="text-red-400 hover:text-red-600 p-1"
+                              title="Eliminar lead"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                
+                {/* Detall del missatge si existeix */}
+                {mockLeads.some((l: any) => l.message) && (
+                  <div className="border-t border-gray-200 p-4">
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">Últimos mensajes:</h4>
+                    <div className="space-y-3">
+                      {mockLeads.filter((l: any) => l.message).slice(0, 3).map((lead: any) => (
+                        <div key={lead.id + '-msg'} className="bg-gray-50 p-3 rounded-lg">
+                          <div className="flex justify-between items-start mb-1">
+                            <span className="font-medium text-gray-800">{lead.fullName}</span>
+                            <span className="text-xs text-gray-400">
+                              {lead.created_at ? new Date(lead.created_at).toLocaleDateString('es-ES') : ''}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 line-clamp-2">{lead.message}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
-      </main>
+
+</main>
     </div>
   );
 };
