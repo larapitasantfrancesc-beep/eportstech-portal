@@ -4,7 +4,7 @@ import {
   loginMock, logoutMock, checkAuth, getBrandConfig, updateBrandConfig, 
   getConfiguratorLeads, getNotificationSettings, updateNotificationSettings,
   getServices, updateServices, getConfiguratorItems, saveConfiguratorItem, deleteConfiguratorItem, updateConfiguratorItemsOrder,
-  getCustomSections, getBotConfig, updateBotConfig, getLeads, deleteLead
+  getCustomSections, getBotConfig, updateBotConfig, getLeads, deleteLead, deleteConfiguratorLead
 } from '../services/supabaseMock';
 import { 
   FileText, Settings, LogOut, Users, Database, Image as ImageIcon, Upload, Save, 
@@ -1459,6 +1459,88 @@ const AdminDashboard: React.FC = () => {
                     </div>
                   </div>
                 )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* === PAQUETES PERSONALIZADOS (Configurator Leads) === */}
+        {activeTab === 'custom_leads' && (
+          <div className="animate-fade-in">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <ShoppingBag className="text-primary-600" /> Paquetes Personalizados
+              <span className="text-sm font-normal text-gray-500">({configuratorLeads.length} total)</span>
+            </h2>
+            
+            {configuratorLeads.length === 0 ? (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+                <ShoppingBag size={48} className="mx-auto mb-4 text-gray-300" />
+                <p>No hay solicitudes de paquetes personalizados.</p>
+                <p className="text-sm mt-2">Las solicitudes aparecerán aquí cuando alguien configure un paquete personalizado.</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items Seleccionados</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {configuratorLeads.map((lead: ConfiguratorLead) => (
+                        <tr key={lead.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <a href={`mailto:${lead.email}`} className="text-primary-600 hover:text-primary-800 font-medium">
+                              {lead.email}
+                            </a>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex flex-wrap gap-1">
+                              {(lead.selectedItems || []).length > 0 ? (
+                                (lead.selectedItems || []).map((item: any, idx: number) => (
+                                  <span key={idx} className="px-2 py-1 text-xs font-medium bg-primary-100 text-primary-800 rounded-full">
+                                    {typeof item === 'string' ? item : item.title?.es || item.title || 'Item'}
+                                  </span>
+                                ))
+                              ) : (
+                                <span className="text-gray-400 text-sm">Sin items</span>
+                              )}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
+                            {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString('es-ES', {
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            }) : '-'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <button 
+                              onClick={async () => {
+                                if (confirm('¿Eliminar esta solicitud?')) {
+                                  const success = await deleteConfiguratorLead(lead.id);
+                                  if (success) {
+                                    setConfiguratorLeads(configuratorLeads.filter((l: ConfiguratorLead) => l.id !== lead.id));
+                                  }
+                                }
+                              }}
+                              className="text-red-400 hover:text-red-600 p-1"
+                              title="Eliminar solicitud"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>

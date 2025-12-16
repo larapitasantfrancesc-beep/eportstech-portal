@@ -270,7 +270,11 @@ export const getCustomSections = async (): Promise<DynamicSection[]> => {
   return [];
 };
 
-// ✅ NOU: Obtenir leads generals
+// =====================================================
+// LEADS FUNCTIONS
+// =====================================================
+
+// ✅ Obtenir leads generals
 export const getLeads = async (): Promise<LeadForm[]> => {
   console.log('📤 [getLeads] Fetching from Supabase...');
   const { data, error } = await supabase
@@ -284,9 +288,10 @@ export const getLeads = async (): Promise<LeadForm[]> => {
   }
 
   console.log('✅ [getLeads] Loaded', data?.length || 0, 'leads from Supabase');
-  return (data || []) as LeadForm[];
+  return data as LeadForm[] || [];
 };
-// ✅ NOU: Eliminar un lead
+
+// ✅ Eliminar un lead
 export const deleteLead = async (id: string): Promise<boolean> => {
   const { error } = await supabase
     .from('leads')
@@ -300,6 +305,7 @@ export const deleteLead = async (id: string): Promise<boolean> => {
   return true;
 };
 
+// ✅ Enviar un lead
 export const submitLead = async (data: LeadForm): Promise<{ success: boolean; error?: string }> => {
   const { error } = await supabase
     .from('leads')
@@ -312,10 +318,22 @@ export const submitLead = async (data: LeadForm): Promise<{ success: boolean; er
   return { success: true };
 };
 
+// =====================================================
+// CONFIGURATOR LEADS (Paquetes Personalizados)
+// =====================================================
+
+// ✅ Enviar configurator lead
 export const submitConfiguratorLead = async (leadData: Omit<ConfiguratorLead, 'id' | 'createdAt'>): Promise<{ success: boolean }> => {
+  // 🔧 MAPPING: camelCase (codi) → lowercase (BD)
+  const dbData = {
+    email: leadData.email,
+    selecteditems: leadData.selectedItems, // camelCase → lowercase
+    created_at: new Date()
+  };
+
   const { error } = await supabase
     .from('configurator_leads')
-    .insert([{ ...leadData, created_at: new Date() }]);
+    .insert([dbData]);
 
   if (error) {
       console.error("Error submitting config lead:", error);
@@ -324,15 +342,48 @@ export const submitConfiguratorLead = async (leadData: Omit<ConfiguratorLead, 'i
   return { success: true };
 };
 
+// ✅ Obtenir configurator leads
 export const getConfiguratorLeads = async (): Promise<ConfiguratorLead[]> => {
+  console.log('📤 [getConfiguratorLeads] Fetching from Supabase...');
   const { data, error } = await supabase
     .from('configurator_leads')
     .select('*')
     .order('created_at', { ascending: false });
 
-  if (error) return [];
-  return data as unknown as ConfiguratorLead[];
+  if (error) {
+    console.error('❌ [getConfiguratorLeads] Error:', error);
+    return [];
+  }
+
+  // 🔧 MAPPING: lowercase (BD) → camelCase (codi)
+  const mapped = (data || []).map(item => ({
+    id: item.id,
+    email: item.email,
+    selectedItems: item.selecteditems || [], // lowercase → camelCase
+    createdAt: item.created_at
+  }));
+
+  console.log('✅ [getConfiguratorLeads] Loaded', mapped.length, 'configurator leads');
+  return mapped as ConfiguratorLead[];
 };
+
+// ✅ Eliminar configurator lead
+export const deleteConfiguratorLead = async (id: string): Promise<boolean> => {
+  const { error } = await supabase
+    .from('configurator_leads')
+    .delete()
+    .eq('id', id);
+  
+  if (error) {
+    console.error('❌ [deleteConfiguratorLead] Error:', error);
+    return false;
+  }
+  return true;
+};
+
+// =====================================================
+// BOT CONFIG
+// =====================================================
 
 export const getBotConfig = async (): Promise<BotConfig> => {
   const { data, error } = await supabase
@@ -366,22 +417,55 @@ export const updateBotConfig = async (config: BotConfig): Promise<boolean> => {
    return !error;
 };
 
-export const getNotificationSettings = async (): Promise<NotificationSettings> => {
-    const { data, error } = await supabase
-    .from('notification_settings')
-    .select('*')
-    .single();
+// =====================================================
+// NOTIFICATION SETTINGS
+// =====================================================
 
-    if(error || !data) {
+// ✅ Obtenir configuració notificacions
+export const getNotificationSettings = async (): Promise<NotificationSettings> => {
+    console.log('📤 [getNotificationSettings] Fetching from Supabase...');
+    const { data, error } = await supabase
+      .from('notification_settings')
+      .select('*')
+      .single();
+
+    if (error || !data) {
+        console.warn('⚠️ [getNotificationSettings] Error or no data:', error);
         return { emailRecipients: [], notifyOnLead: true, notifyOnConfigurator: true };
     }
-    return data as NotificationSettings;
+
+    // 🔧 MAPPING: lowercase (BD) → camelCase (codi)
+    const mapped: NotificationSettings = {
+      emailRecipients: data.emailrecipients || [],      // lowercase → camelCase
+      notifyOnLead: data.notifyonlead ?? true,          // lowercase → camelCase
+      notifyOnConfigurator: data.notifyonconfigurator ?? true  // lowercase → camelCase
+    };
+
+    console.log('✅ [getNotificationSettings] Loaded:', mapped);
+    return mapped;
 };
 
+// ✅ Actualitzar configuració notificacions
 export const updateNotificationSettings = async (settings: NotificationSettings): Promise<boolean> => {
+    console.log('📤 [updateNotificationSettings] Updating...', settings);
+    
+    // 🔧 MAPPING: camelCase (codi) → lowercase (BD)
+    const dbData = {
+      emailrecipients: settings.emailRecipients,        // camelCase → lowercase
+      notifyonlead: settings.notifyOnLead,              // camelCase → lowercase
+      notifyonconfigurator: settings.notifyOnConfigurator  // camelCase → lowercase
+    };
+
     const { error } = await supabase
-    .from('notification_settings')
-    .update(settings)
-    .eq('id', 1);
-    return !error;
+      .from('notification_settings')
+      .update(dbData)
+      .eq('id', 1);
+    
+    if (error) {
+      console.error('❌ [updateNotificationSettings] Error:', error);
+      return false;
+    }
+    
+    console.log('✅ [updateNotificationSettings] Success');
+    return true;
 };
