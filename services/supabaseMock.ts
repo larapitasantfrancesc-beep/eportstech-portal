@@ -286,6 +286,19 @@ export const getLeads = async (): Promise<LeadForm[]> => {
   console.log('✅ [getLeads] Loaded', data?.length || 0, 'leads from Supabase');
   return (data || []) as LeadForm[];
 };
+// ✅ NOU: Eliminar un lead
+export const deleteLead = async (id: string): Promise<boolean> => {
+  const { error } = await supabase
+    .from('leads')
+    .delete()
+    .eq('id', id);
+  
+  if (error) {
+    console.error('❌ [deleteLead] Error:', error);
+    return false;
+  }
+  return true;
+};
 
 export const submitLead = async (data: LeadForm): Promise<{ success: boolean; error?: string }> => {
   const { error } = await supabase
