@@ -88,27 +88,40 @@ export const useBrandConfigWithCache = () => {
   }, []);
 
   // Obtenir config completa (només quan necessari)
-  const fetchFullConfig = useCallback(async (): Promise<{ config: BrandConfig; version: number } | null> => {
-    try {
-      const { data, error } = await supabase
-        .from('brand_config')
-        .select('*')
-        .single();
+const fetchFullConfig = useCallback(async (): Promise<{ config: BrandConfig; version: number } | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('brand_config')
+      .select('*')
+      .single();
 
-      if (error || !data) {
-        console.warn('Could not fetch brand config:', error);
-        return null;
-      }
-
-      return {
-        config: data as BrandConfig,
-        version: data.config_version || 0
-      };
-    } catch (e) {
-      console.error('Error fetching config:', e);
+    if (error || !data) {
+      console.warn('Could not fetch brand config:', error);
       return null;
     }
-  }, []);
+
+    // 🔧 MAPPING: lowercase (BD) → camelCase (codi)
+    const config: BrandConfig = {
+      siteName: data.sitename || '',
+      favicon: data.favicon || '',
+      navLogo: data.navlogo || '/logo-blue.png',
+      footerLogo: data.footerlogo || '/logo-white.png',
+      contactEmail: data.contactemail || 'contact@eportstech.com',
+      contactPhone: data.contactphone || '+34 900 123 456',
+      hero: data.hero || {},
+      benefits: data.benefits || { mainTitle: {}, subtitle: {}, items: [] },
+      footer: data.footer || {}
+    };
+
+    return {
+      config,
+      version: data.config_version || 0
+    };
+  } catch (e) {
+    console.error('Error fetching config:', e);
+    return null;
+  }
+}, []);
 
   // Guardar a cache
   const saveToCache = useCallback((config: BrandConfig, version: number) => {
