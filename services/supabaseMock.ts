@@ -94,36 +94,22 @@ export const getBrandConfig = async (): Promise<BrandConfig> => {
     .single();
 
   if (error || !data) {
-    console.warn("Could not fetch brand config (using defaults/mock temporarily)", error);
-    return {
-        siteName: "EportsTech",
-        favicon: "",
-        navLogo: '/logo-blue.png',
-        footerLogo: '/logo-white.png',
-        contactEmail: 'contact@eportstech.com',
-        contactPhone: '+34 900 123 456',
-        hero: {
-            image: '/hq-background.jpg',
-            imagePosition: 'center',
-            overlayOpacity: 0.6,
-            title: TRANSLATIONS.heroTitle,
-            subtitle: TRANSLATIONS.heroSubtitle,
-            ctaText: TRANSLATIONS.ctaButton
-        },
-        benefits: {
-            mainTitle: TRANSLATIONS.benefitsTitle,
-            subtitle: TRANSLATIONS.benefitsSubtitle,
-            items: []
-        },
-        footer: {
-            copyrightText: { es: "© 2024", ca: "© 2024", en: "© 2024", fr: "© 2024", de: "© 2024", it: "© 2024" },
-            privacyText: { es: "Privacidad", ca: "Privacitat", en: "Privacy", fr: "Confidentialité", de: "Datenschutz", it: "Privacy" },
-            legalText: { es: "Legal", ca: "Legal", en: "Legal", fr: "Légal", de: "Rechtlich", it: "Legale" },
-            cookiesText: { es: "Cookies", ca: "Cookies", en: "Cookies", fr: "Cookies", de: "Cookies", it: "Cookies" }
-        }
-    };
+    console.warn("Could not fetch brand config", error);
+    // ... fallback per defecte
   }
-  return data as BrandConfig;
+
+  // 🔧 MAPPING: lowercase (BD) → camelCase (codi)
+  return {
+    siteName: data.sitename || '',
+    favicon: data.favicon || '',
+    navLogo: data.navlogo || '/logo-blue.png',
+    footerLogo: data.footerlogo || '/logo-white.png',
+    contactEmail: data.contactemail || 'contact@eportstech.com',
+    contactPhone: data.contactphone || '+34 900 123 456',
+    hero: data.hero || {},
+    benefits: data.benefits || { mainTitle: {}, subtitle: {}, items: [] },
+    footer: data.footer || {}
+  } as BrandConfig;
 };
 
 export const updateBrandConfig = async (config: Partial<BrandConfig>, files?: Record<string, File>): Promise<boolean> => {
