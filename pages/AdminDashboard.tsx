@@ -64,6 +64,8 @@ const AdminDashboard: React.FC = () => {
   const [configuratorItems, setConfiguratorItems] = useState<ConfiguratorItem[]>([]);
   const [editingItem, setEditingItem] = useState<ConfiguratorItem | null>(null);
   const [isEditingItemModalOpen, setIsEditingItemModalOpen] = useState(false);
+  const [hasItemsChanges, setHasItemsChanges] = useState(false);
+  const [isSavingItems, setIsSavingItems] = useState(false);
 
   // Bot Config State
   const [botConfig, setBotConfig] = useState<BotConfig | null>(null);
@@ -84,6 +86,8 @@ const AdminDashboard: React.FC = () => {
   const [editingService, setEditingService] = useState<Service | null>(null);
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
   const [featuresText, setFeaturesText] = useState('');
+  const [hasServicesChanges, setHasServicesChanges] = useState(false);
+  const [isSavingServices, setIsSavingServices] = useState(false);
 
   // Sections State
   const [customSections, setCustomSections] = useState<DynamicSection[]>([]);
@@ -334,25 +338,38 @@ const AdminDashboard: React.FC = () => {
       }
   };
 
-  const toggleServiceVisibility = async (service: Service) => {
+  const toggleServiceVisibility = (service: Service) => {
       const updatedService = { ...service, visible: !service.visible };
       const updatedList = services.map(s => s.id === service.id ? updatedService : s);
       setServices(updatedList);
-      await updateServices(updatedList);
+      setHasServicesChanges(true);
   };
 
-  const moveService = async (index: number, direction: 'up' | 'down') => {
+  // Handler per guardar tots els canvis de serveis
+  const saveServicesHandler = async () => {
+      setIsSavingServices(true);
+      const success = await updateServices(services);
+      if (success) {
+          setHasServicesChanges(false);
+          alert('Servicios actualizados correctamente');
+      } else {
+          alert('Error al guardar los servicios');
+      }
+      setIsSavingServices(false);
+  };
+
+  const moveService = (index: number, direction: 'up' | 'down') => {
       if ((direction === 'up' && index === 0) || (direction === 'down' && index === services.length - 1)) return;
       
       const newIndex = direction === 'up' ? index - 1 : index + 1;
       const newServices = [...services];
       [newServices[index], newServices[newIndex]] = [newServices[newIndex], newServices[index]];
       
-      // Update order property
-      newServices.forEach((s, idx) => s.order = idx);
+      // Update sort_order property locally (save with button)
+      newServices.forEach((s, idx) => (s as any).sort_order = idx);
       
       setServices(newServices);
-      await updateServices(newServices);
+      setHasServicesChanges(true);
   };
 
   // --- CONFIGURATOR ITEM HANDLERS ---
@@ -364,8 +381,8 @@ const AdminDashboard: React.FC = () => {
           title: { es: 'Nuevo Servicio', ca: '', en: '', fr: '', de: '', it: '' },
           benefit: { es: 'Beneficio principal', ca: '', en: '', fr: '', de: '', it: '' },
           visible: true,
-          order: configuratorItems.length
-      });
+          sort_order: configuratorItems.length
+      } as any);
       setIsEditingItemModalOpen(true);
   };
 
@@ -391,24 +408,37 @@ const AdminDashboard: React.FC = () => {
       }
   };
 
-  const toggleItemVisibility = async (item: ConfiguratorItem) => {
+  const toggleItemVisibility = (item: ConfiguratorItem) => {
       const updatedItem = { ...item, visible: !item.visible };
-      await saveConfiguratorItem(updatedItem);
       setConfiguratorItems(prev => prev.map(i => i.id === item.id ? updatedItem : i));
+      setHasItemsChanges(true);
   };
 
-  const moveItem = async (index: number, direction: 'up' | 'down') => {
+  // Handler per guardar tots els canvis d'items
+  const saveItemsHandler = async () => {
+      setIsSavingItems(true);
+      const success = await updateConfiguratorItemsOrder(configuratorItems);
+      if (success) {
+          setHasItemsChanges(false);
+          alert('Items actualizados correctamente');
+      } else {
+          alert('Error al guardar los items');
+      }
+      setIsSavingItems(false);
+  };
+
+  const moveItem = (index: number, direction: 'up' | 'down') => {
     if ((direction === 'up' && index === 0) || (direction === 'down' && index === configuratorItems.length - 1)) return;
 
     const newIndex = direction === 'up' ? index - 1 : index + 1;
     const newItems = [...configuratorItems];
     [newItems[index], newItems[newIndex]] = [newItems[newIndex], newItems[index]];
     
-    // Update order property locally and in DB
-    newItems.forEach((item, idx) => item.order = idx);
+    // Update sort_order property locally (save with button)
+    newItems.forEach((item, idx) => (item as any).sort_order = idx);
 
     setConfiguratorItems(newItems);
-    await updateConfiguratorItemsOrder(newItems);
+    setHasItemsChanges(true);
   };
 
   // --- BOT HANDLERS ---
@@ -954,6 +984,24 @@ const AdminDashboard: React.FC = () => {
                         ))}
                     </div>
                 )}
+                
+                {/* Botó Guardar Canvis Serveis */}
+                {hasServicesChanges && (
+                    <div className="mt-6 flex justify-end">
+                        <button 
+                            onClick={saveServicesHandler}
+                            disabled={isSavingServices}
+                            className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                        >
+                            {isSavingServices ? (
+                                <><Clock size={18} className="animate-spin" /> Guardando...</>
+                            ) : (
+                                <><Save size={18} /> Guardar Cambios</>
+                            )}
+                        </button>
+                    </div>
+                )}
+                
                 {/* Modal for Service Editing (Service editing implementation details omitted for brevity, logic handled above) */}
                 {isServiceModalOpen && editingService && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
@@ -1082,6 +1130,24 @@ const AdminDashboard: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
+                
+                {/* Botó Guardar Canvis Items */}
+                {hasItemsChanges && (
+                    <div className="mt-6 flex justify-end">
+                        <button 
+                            onClick={saveItemsHandler}
+                            disabled={isSavingItems}
+                            className="flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                        >
+                            {isSavingItems ? (
+                                <><Clock size={18} className="animate-spin" /> Guardando...</>
+                            ) : (
+                                <><Save size={18} /> Guardar Cambios</>
+                            )}
+                        </button>
+                    </div>
+                )}
+                
                  {/* Edit Configurator Item Modal (same as before) */}
                  {isEditingItemModalOpen && editingItem && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
