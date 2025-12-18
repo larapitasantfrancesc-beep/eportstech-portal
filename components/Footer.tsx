@@ -36,6 +36,8 @@ interface FooterProps {
       legalText?: Record<Language, string>;
       cookiesText?: Record<Language, string>;
       copyrightText?: Record<Language, string>;
+      aboutText?: Record<Language, string>;
+      contactAddress?: Record<Language, string>;
     };
   };
 }
@@ -202,6 +204,10 @@ const Footer: React.FC<FooterProps> = ({ lang, brandConfig }) => {
   const cookiesText = brandConfig.footer?.cookiesText?.[lang] || "Cookies";
   const copyrightText = brandConfig.footer?.copyrightText?.[lang] || `© ${new Date().getFullYear()} EportsTech`;
   
+  // Textos editables del footer
+  const aboutText = brandConfig.footer?.aboutText?.[lang] || TEXTS.aboutText[lang];
+  const contactAddress = brandConfig.footer?.contactAddress?.[lang] || "Polígon Industrial, Tortosa";
+  
   // Social Media
   const socialMedia = brandConfig.socialMedia || {};
   const catalogUrl = brandConfig.catalogUrl || 'https://drive.google.com/uc?export=download&id=1vweh1bRKZO7lpRudkzjoXDxzxc-s-SGm';
@@ -268,7 +274,7 @@ const Footer: React.FC<FooterProps> = ({ lang, brandConfig }) => {
               />
             </a>
             <p className="text-sm text-slate-400 leading-relaxed mb-6">
-              {TEXTS.aboutText[lang]}
+              {aboutText}
             </p>
             {/* Social Links */}
             {hasSocialLinks && (
@@ -342,7 +348,7 @@ const Footer: React.FC<FooterProps> = ({ lang, brandConfig }) => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-primary-400 flex-shrink-0 mt-0.5" />
-                <span className="text-sm text-slate-400">{TEXTS.address[lang]}</span>
+                <span className="text-sm text-slate-400">{contactAddress}</span>
               </li>
               <li>
                 <a href={`tel:${contactPhone.replace(/\s/g, '')}`} 

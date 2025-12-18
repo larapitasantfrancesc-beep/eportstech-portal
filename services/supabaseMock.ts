@@ -127,7 +127,23 @@ export const getBrandConfig = async (): Promise<BrandConfig> => {
             copyrightText: { es: "© 2024", ca: "© 2024", en: "© 2024", fr: "© 2024", de: "© 2024", it: "© 2024" },
             privacyText: { es: "Privacidad", ca: "Privacitat", en: "Privacy", fr: "Confidentialité", de: "Datenschutz", it: "Privacy" },
             legalText: { es: "Legal", ca: "Legal", en: "Legal", fr: "Légal", de: "Rechtlich", it: "Legale" },
-            cookiesText: { es: "Cookies", ca: "Cookies", en: "Cookies", fr: "Cookies", de: "Cookies", it: "Cookies" }
+            cookiesText: { es: "Cookies", ca: "Cookies", en: "Cookies", fr: "Cookies", de: "Cookies", it: "Cookies" },
+            aboutText: { 
+              es: "EportsTech es la división empresarial de Grupo EACOM, especializada en soluciones de telecomunicaciones y servicios IT para empresas en España y Europa.",
+              ca: "EportsTech és la divisió empresarial de Grup EACOM, especialitzada en solucions de telecomunicacions i serveis IT per a empreses a Espanya i Europa.",
+              en: "EportsTech is the business division of Grupo EACOM, specialized in telecommunications solutions and IT services for companies in Spain and Europe.",
+              fr: "EportsTech est la division entreprise du Grupo EACOM, spécialisée dans les solutions de télécommunications et services IT.",
+              de: "EportsTech ist die Geschäftsabteilung der Grupo EACOM, spezialisiert auf Telekommunikationslösungen und IT-Services.",
+              it: "EportsTech è la divisione aziendale di Grupo EACOM, specializzata in soluzioni di telecomunicazioni e servizi IT."
+            },
+            contactAddress: { 
+              es: "Polígon Industrial, Tortosa, España",
+              ca: "Polígon Industrial, Tortosa, Espanya",
+              en: "Industrial Park, Tortosa, Spain",
+              fr: "Zone Industrielle, Tortosa, Espagne",
+              de: "Industriegebiet, Tortosa, Spanien",
+              it: "Zona Industriale, Tortosa, Spagna"
+            }
         }
     };
   }

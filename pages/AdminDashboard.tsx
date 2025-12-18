@@ -589,6 +589,9 @@ const AdminDashboard: React.FC = () => {
           <button onClick={() => setActiveTab('social')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'social' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
             <Link size={20} /> <span>Redes Sociales</span>
           </button>
+          <button onClick={() => setActiveTab('footer')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'footer' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
+            <AlignLeft size={20} /> <span>Textos Footer</span>
+          </button>
           <div className="pt-4 pb-2 px-4 text-xs font-semibold text-primary-400 uppercase">Config</div>
           <button onClick={() => setActiveTab('bot')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'bot' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
              <Database size={20} /> <span>Chatbot AI</span>
@@ -1861,6 +1864,194 @@ const AdminDashboard: React.FC = () => {
                   <Save size={18} /> Guardar Cambios
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* === FOOTER CONTENT === */}
+        {activeTab === 'footer' && (
+          <div className="animate-fade-in space-y-6 max-w-4xl">
+            <div className="flex justify-between items-center sticky top-0 bg-gray-50 z-20 py-4 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                <AlignLeft className="text-primary-600" /> Textos del Footer
+              </h2>
+              
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border shadow-sm">
+                  <Languages size={18} className="text-gray-500" />
+                  <select 
+                    value={heroEditLang}
+                    onChange={(e) => setHeroEditLang(e.target.value as Language)}
+                    className="text-sm border-none focus:ring-0 bg-transparent"
+                  >
+                    {SUPPORTED_LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.name}</option>)}
+                  </select>
+                </div>
+                <button 
+                  onClick={saveBrandConfigHandler}
+                  disabled={isSavingBrand}
+                  className="flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors shadow-sm disabled:opacity-50"
+                >
+                  {isSavingBrand ? <Settings className="animate-spin" size={18} /> : <Save size={18} />}
+                  <span>{isSavingBrand ? 'Guardando...' : 'Guardar Cambios'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* About Text */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <BookOpen size={18} className="text-primary-500" />
+                Texto "Sobre Nosotros"
+              </h3>
+              <p className="text-sm text-gray-500 mb-4">
+                Este texto aparece en la primera columna del footer, debajo del logo.
+              </p>
+              <textarea
+                rows={4}
+                className="w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                placeholder="Descripción de la empresa..."
+                value={brandConfig.footer?.aboutText?.[heroEditLang] || ''}
+                onChange={(e) => setBrandConfig({
+                  ...brandConfig,
+                  footer: {
+                    ...brandConfig.footer,
+                    aboutText: {
+                      ...brandConfig.footer?.aboutText,
+                      [heroEditLang]: e.target.value
+                    }
+                  }
+                })}
+              />
+            </div>
+
+            {/* Contact Address */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <MapPin size={18} className="text-primary-500" />
+                Dirección de Contacto
+              </h3>
+              <p className="text-sm text-gray-500 mb-4">
+                Dirección física que aparece en la sección de contacto del footer.
+              </p>
+              <input
+                type="text"
+                className="w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                placeholder="Polígono Industrial, Ciudad, País"
+                value={brandConfig.footer?.contactAddress?.[heroEditLang] || ''}
+                onChange={(e) => setBrandConfig({
+                  ...brandConfig,
+                  footer: {
+                    ...brandConfig.footer,
+                    contactAddress: {
+                      ...brandConfig.footer?.contactAddress,
+                      [heroEditLang]: e.target.value
+                    }
+                  }
+                })}
+              />
+            </div>
+
+            {/* Legal Texts */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <Lock size={18} className="text-primary-500" />
+                Textos Legales (Barra Inferior)
+              </h3>
+              <p className="text-sm text-gray-500 mb-4">
+                Textos de los enlaces legales que aparecen en la barra inferior del footer.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Copyright</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                    placeholder="© 2024 MiEmpresa"
+                    value={brandConfig.footer?.copyrightText?.[heroEditLang] || ''}
+                    onChange={(e) => setBrandConfig({
+                      ...brandConfig,
+                      footer: {
+                        ...brandConfig.footer,
+                        copyrightText: {
+                          ...brandConfig.footer?.copyrightText,
+                          [heroEditLang]: e.target.value
+                        }
+                      }
+                    })}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Enlace Privacidad</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                    placeholder="Política de Privacidad"
+                    value={brandConfig.footer?.privacyText?.[heroEditLang] || ''}
+                    onChange={(e) => setBrandConfig({
+                      ...brandConfig,
+                      footer: {
+                        ...brandConfig.footer,
+                        privacyText: {
+                          ...brandConfig.footer?.privacyText,
+                          [heroEditLang]: e.target.value
+                        }
+                      }
+                    })}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Enlace Aviso Legal</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                    placeholder="Aviso Legal"
+                    value={brandConfig.footer?.legalText?.[heroEditLang] || ''}
+                    onChange={(e) => setBrandConfig({
+                      ...brandConfig,
+                      footer: {
+                        ...brandConfig.footer,
+                        legalText: {
+                          ...brandConfig.footer?.legalText,
+                          [heroEditLang]: e.target.value
+                        }
+                      }
+                    })}
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Enlace Cookies</label>
+                  <input
+                    type="text"
+                    className="w-full rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                    placeholder="Política de Cookies"
+                    value={brandConfig.footer?.cookiesText?.[heroEditLang] || ''}
+                    onChange={(e) => setBrandConfig({
+                      ...brandConfig,
+                      footer: {
+                        ...brandConfig.footer,
+                        cookiesText: {
+                          ...brandConfig.footer?.cookiesText,
+                          [heroEditLang]: e.target.value
+                        }
+                      }
+                    })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Info Box */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-sm text-blue-800">
+                <strong>Nota:</strong> Los textos del footer se guardan junto con la configuración de marca. 
+                Recuerda completar todos los idiomas para una experiencia multilingüe completa.
+                El logo, email y teléfono se configuran en "Kit de Marca & Hero". Las redes sociales y URL del catálogo en "Redes Sociales".
+              </p>
             </div>
           </div>
         )}
