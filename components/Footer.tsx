@@ -215,7 +215,7 @@ const Footer: React.FC<FooterProps> = ({ lang, brandConfig }) => {
 
   const handleCatalogDownload = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !email.includes('@')) {
       setError(lang === 'es' ? 'Introduce un email válido' : lang === 'ca' ? 'Introdueix un email vàlid' : 'Enter a valid email');
       return;
@@ -224,15 +224,14 @@ const Footer: React.FC<FooterProps> = ({ lang, brandConfig }) => {
     setIsSubmitting(true);
     setError('');
 
+    // Obrir la finestra ABANS del await per evitar bloqueig de pop-ups
+    const newWindow = window.open(catalogUrl, '_blank', 'noopener,noreferrer');
+
     try {
       // Guardar lead a la base de dades
       await submitCatalogLead(email, 'footer');
 
       setIsSuccess(true);
-      
-      // Obrir el PDF en una nova pestanya (més fiable que descàrrega automàtica)
-      // Google Drive bloqueja descàrregues automàtiques, així que obrim en nova finestra
-      window.open(catalogUrl, '_blank', 'noopener,noreferrer');
 
       // Reset després de 3 segons
       setTimeout(() => {
@@ -242,6 +241,10 @@ const Footer: React.FC<FooterProps> = ({ lang, brandConfig }) => {
 
     } catch (err) {
       setError(lang === 'es' ? 'Error al procesar. Inténtalo de nuevo.' : 'Error processing. Try again.');
+      // Si hi ha error, tancar la finestra que hem obert
+      if (newWindow) {
+        newWindow.close();
+      }
     } finally {
       setIsSubmitting(false);
     }
