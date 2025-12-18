@@ -71,6 +71,41 @@
     <link rel="canonical" href="https://eportstech.netlify.app/" />
     
     <!-- ============================================ -->
+    <!-- GOOGLE CONSENT MODE V2 (GDPR) -->
+    <!-- ============================================ -->
+    <script>
+      // Google Consent Mode v2 - Default state (abans de carregar gtag.js)
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      // Estat per defecte: tot denegat fins que l'usuari accepti
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'functionality_storage': 'granted',
+        'personalization_storage': 'denied',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      
+      // Activar URL passthrough per preservar informació de campanya
+      gtag('set', 'url_passthrough', true);
+      
+      // Activar redaction per ads
+      gtag('set', 'ads_data_redaction', true);
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5FZQ3G7N');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- ============================================ -->
     <!-- FONTS & STYLES -->
     <!-- ============================================ -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -129,8 +164,8 @@
         "height": 100
       },
       "image": "https://eportstech.netlify.app/og-image.png",
-      "telephone": "+34977000000",
-      "email": "info@eportstech.com",
+      "telephone": "+34977353735",
+      "email": "hola@eportsinternet.com",
       "foundingDate": "2020",
       "areaServed": [
         {
@@ -172,14 +207,14 @@
       "contactPoint": [
         {
           "@type": "ContactPoint",
-          "telephone": "+34977000000",
+          "telephone": "+34977353735",
           "contactType": "customer service",
           "availableLanguage": ["Catalan", "Spanish", "English", "German"],
           "areaServed": ["ES", "GB", "AT"]
         },
         {
           "@type": "ContactPoint",
-          "telephone": "+34977000000",
+          "telephone": "+34977353735",
           "contactType": "technical support",
           "availableLanguage": ["Catalan", "Spanish", "English"],
           "areaServed": ["ES", "GB", "AT"]
@@ -253,7 +288,7 @@
       "name": "EportsTech",
       "description": "Serveis de telecomunicacions i IT per empreses a Espanya i Europa",
       "url": "https://eportstech.netlify.app",
-      "telephone": "+34977000000",
+      "telephone": "+34977353735",
       "priceRange": "€€",
       "address": {
         "@type": "PostalAddress",
@@ -386,6 +421,11 @@
 
   </head>
   <body class="bg-slate-50 text-slate-900 antialiased">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FZQ3G7N"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

@@ -12,6 +12,7 @@ import SyncPage from './pages/SyncPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import CookiesPolicy from './pages/CookiesPolicy';
 import LegalNotice from './pages/LegalNotice';
+import CookieConsent from './components/CookieConsent';
 import { Language, ConfiguratorItem, BrandConfig, Service } from './types';
 import { initGA, trackPageView } from './services/analytics';
 import { useBrandConfigWithCache } from './hooks/useBrandConfigWithCache';
@@ -140,12 +141,19 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
           </div>
 
           <p className="mb-6 text-sm opacity-80">{copyrightText}</p>
-          <div className="flex flex-wrap justify-center gap-6 text-sm items-center">
-            {/* ✅ Enllaços a pàgines legals */}
+          
+          {/* ✅ Links centrats */}
+          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm">
             <Link to="/privacy" className="hover:text-white transition-colors">{privacyText}</Link>
+            <span className="text-slate-600 hidden sm:inline">|</span>
             <Link to="/legal" className="hover:text-white transition-colors">{legalText}</Link>
+            <span className="text-slate-600 hidden sm:inline">|</span>
             <Link to="/cookies" className="hover:text-white transition-colors">{cookiesText}</Link>
-            <Link to="/admin" className="text-slate-700 hover:text-slate-500 transition-colors ml-2" title="Acceso Corporativo">
+          </div>
+          
+          {/* Admin link separat */}
+          <div className="mt-6">
+            <Link to="/admin" className="text-slate-700 hover:text-slate-500 transition-colors" title="Acceso Corporativo">
                 <Lock size={12} />
             </Link>
           </div>
@@ -208,6 +216,9 @@ const App: React.FC = () => {
         <div className="relative z-50">
            <Chatbot lang={language} />
         </div>
+        
+        {/* Cookie Consent Banner */}
+        <CookieConsent lang={language} />
       </div>
     </HashRouter>
   );
