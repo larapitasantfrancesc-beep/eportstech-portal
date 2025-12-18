@@ -5,7 +5,7 @@ import {
   getConfiguratorLeads, getNotificationSettings, updateNotificationSettings,
   getServices, updateServices, getConfiguratorItems, saveConfiguratorItem, deleteConfiguratorItem, updateConfiguratorItemsOrder,
   getCustomSections, getBotConfig, updateBotConfig, getLeads, deleteLead, deleteConfiguratorLead,
-  getCatalogLeads, deleteCatalogLead, CatalogLead, updateSocialMediaConfig, SocialMediaConfig
+  getCatalogLeads, deleteCatalogLead, CatalogLead, updateSocialMediaConfig, getSocialMediaConfig, SocialMediaConfig
 } from '../services/supabaseMock';
 import { 
   FileText, Settings, LogOut, Users, Database, Image as ImageIcon, Upload, Save, 
@@ -190,6 +190,10 @@ const AdminDashboard: React.FC = () => {
       // Carregar catalog leads
       const catLeads = await getCatalogLeads();
       setCatalogLeads(catLeads);
+
+      // Carregar social media config
+      const socialConfig = await getSocialMediaConfig();
+      setSocialMediaConfig(socialConfig);
   };
 
   const handleLogin = async (e: React.FormEvent) => {

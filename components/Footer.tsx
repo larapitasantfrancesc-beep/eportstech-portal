@@ -230,14 +230,9 @@ const Footer: React.FC<FooterProps> = ({ lang, brandConfig }) => {
 
       setIsSuccess(true);
       
-      // Descarregar el PDF
-      setTimeout(() => {
-        const link = document.createElement('a');
-        link.href = catalogUrl;
-        link.download = 'Catalogo-EportsTech.pdf';
-        link.target = '_blank';
-        link.click();
-      }, 500);
+      // Obrir el PDF en una nova pestanya (més fiable que descàrrega automàtica)
+      // Google Drive bloqueja descàrregues automàtiques, així que obrim en nova finestra
+      window.open(catalogUrl, '_blank', 'noopener,noreferrer');
 
       // Reset després de 3 segons
       setTimeout(() => {

@@ -2,6 +2,48 @@ import { supabase } from './supabaseClient';
 import { LeadForm, BrandConfig, ConfiguratorLead, NotificationSettings, GlobalSettings, Service, ConfiguratorItem, DynamicSection, ServiceCategory, ConfiguratorItemResult, BotConfig, BenefitsConfig } from "../types";
 import { TRANSLATIONS, SERVICES_DATA, CONFIGURATOR_ITEMS } from '../constants';
 
+// =====================================================
+// EMAIL NOTIFICATIONS
+// =====================================================
+
+interface NotificationData {
+  email: string;
+  fullName?: string;
+  phone?: string;
+  company?: string;
+  serviceInterest?: string;
+  message?: string;
+  selectedItems?: string[];
+  source?: string;
+}
+
+export const sendEmailNotification = async (
+  type: 'lead' | 'configurator' | 'catalog',
+  recipients: string[],
+  data: NotificationData
+): Promise<boolean> => {
+  try {
+    console.log('📧 [sendEmailNotification] Sending...', type, recipients);
+    
+    const response = await fetch('/.netlify/functions/send-notification', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, recipients, data }),
+    });
+
+    if (!response.ok) {
+      console.error('❌ [sendEmailNotification] Failed:', await response.text());
+      return false;
+    }
+
+    console.log('✅ [sendEmailNotification] Sent successfully');
+    return true;
+  } catch (error) {
+    console.error('❌ [sendEmailNotification] Error:', error);
+    return false;
+  }
+};
+
 export const uploadFileToStorage = async (file: File, bucket: string, path: string): Promise<string | null> => {
   try {
     const fileExt = file.name.split('.').pop();
@@ -158,7 +200,9 @@ export const getBrandConfig = async (): Promise<BrandConfig> => {
     contactPhone: data.contactphone || '+34 900 123 456',
     hero: data.hero || {},
     benefits: data.benefits || { mainTitle: {}, subtitle: {}, items: [] },
-    footer: data.footer || {}
+    footer: data.footer || {},
+    socialMedia: data.social_media || {},
+    catalogUrl: data.catalog_url || 'https://drive.google.com/uc?export=download&id=1vweh1bRKZO7lpRudkzjoXDxzxc-s-SGm'
   } as BrandConfig;
 };
 
@@ -339,6 +383,24 @@ export const submitLead = async (data: LeadForm): Promise<{ success: boolean; er
       console.error("Error submitting lead:", error);
       return { success: false, error: error.message };
   }
+  
+  // Enviar notificació per email
+  try {
+    const settings = await getNotificationSettings();
+    if (settings.emailNotifications && settings.notificationEmails?.length > 0) {
+      await sendEmailNotification('lead', settings.notificationEmails, {
+        email: data.email,
+        fullName: data.fullName,
+        phone: data.phone,
+        company: data.company,
+        serviceInterest: data.serviceInterest,
+        message: data.message
+      });
+    }
+  } catch (notifError) {
+    console.warn('⚠️ [submitLead] Notification failed:', notifError);
+  }
+  
   return { success: true };
 };
 
@@ -363,6 +425,20 @@ export const submitConfiguratorLead = async (leadData: Omit<ConfiguratorLead, 'i
       console.error("Error submitting config lead:", error);
       return { success: false };
   }
+  
+  // Enviar notificació per email
+  try {
+    const settings = await getNotificationSettings();
+    if (settings.emailNotifications && settings.notificationEmails?.length > 0) {
+      await sendEmailNotification('configurator', settings.notificationEmails, {
+        email: leadData.email,
+        selectedItems: leadData.selectedItems
+      });
+    }
+  } catch (notifError) {
+    console.warn('⚠️ [submitConfiguratorLead] Notification failed:', notifError);
+  }
+  
   return { success: true };
 };
 
@@ -520,6 +596,16 @@ export const submitCatalogLead = async (email: string, source: string = 'footer'
   if (error) {
     console.error('❌ [submitCatalogLead] Error:', error);
     return { success: false };
+  }
+  
+  // Enviar notificació per email
+  try {
+    const settings = await getNotificationSettings();
+    if (settings.emailNotifications && settings.notificationEmails?.length > 0) {
+      await sendEmailNotification('catalog', settings.notificationEmails, { email, source });
+    }
+  } catch (notifError) {
+    console.warn('⚠️ [submitCatalogLead] Notification failed:', notifError);
   }
   
   console.log('✅ [submitCatalogLead] Success');
