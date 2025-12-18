@@ -7,6 +7,7 @@ import BenefitsSection from './components/BenefitsSection';
 import ContactForm from './components/ContactForm';
 import Chatbot from './components/Chatbot';
 import SolutionsConfigurator from './components/SolutionsConfigurator';
+import NeedsAssessment from './components/NeedsAssessment';
 import AdminDashboard from './pages/AdminDashboard';
 import SyncPage from './pages/SyncPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -110,6 +111,7 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
       <Hero lang={lang} config={brandConfig.hero} onConsultationRequest={handleConsultationRequest} />
       <BenefitsSection lang={lang} config={brandConfig.benefits} />
       <ServicesSection lang={lang} onServiceRequest={handleServiceRequest} />
+      <NeedsAssessment lang={lang} />
       <SolutionsConfigurator lang={lang} onRequestQuote={handleConfiguratorRequest} />
       <ContactForm 
           lang={lang} 
