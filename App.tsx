@@ -9,9 +9,11 @@ import Chatbot from './components/Chatbot';
 import SolutionsConfigurator from './components/SolutionsConfigurator';
 import AdminDashboard from './pages/AdminDashboard';
 import SyncPage from './pages/SyncPage';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import CookiesPolicy from './pages/CookiesPolicy';
+import LegalNotice from './pages/LegalNotice';
 import { Language, ConfiguratorItem, BrandConfig, Service } from './types';
 import { initGA, trackPageView } from './services/analytics';
-// IMPORTANT: Assegura't que existeix la carpeta hooks/ amb el fitxer
 import { useBrandConfigWithCache } from './hooks/useBrandConfigWithCache';
 import { Lock } from 'lucide-react';
 
@@ -118,22 +120,31 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
       
       <footer className="bg-slate-900 text-slate-400 py-12">
         <div className="max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
+          {/* ✅ Logo amb enllaç a grupoeacom.com */}
           <div className="mb-8">
-              <img 
-                  src={footerLogo} 
-                  alt="Eports Tech" 
-                  className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
-                  onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                  }}
-              />
+              <a 
+                href="https://grupoeacom.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                title="Grupo EACOM"
+              >
+                <img 
+                    src={footerLogo} 
+                    alt="Eports Tech - Grupo EACOM" 
+                    className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
+                    onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                    }}
+                />
+              </a>
           </div>
 
           <p className="mb-6 text-sm opacity-80">{copyrightText}</p>
           <div className="flex flex-wrap justify-center gap-6 text-sm items-center">
-            <a href="#" className="hover:text-white transition-colors">{privacyText}</a>
-            <a href="#" className="hover:text-white transition-colors">{legalText}</a>
-            <a href="#" className="hover:text-white transition-colors">{cookiesText}</a>
+            {/* ✅ Enllaços a pàgines legals */}
+            <Link to="/privacy" className="hover:text-white transition-colors">{privacyText}</Link>
+            <Link to="/legal" className="hover:text-white transition-colors">{legalText}</Link>
+            <Link to="/cookies" className="hover:text-white transition-colors">{cookiesText}</Link>
             <Link to="/admin" className="text-slate-700 hover:text-slate-500 transition-colors ml-2" title="Acceso Corporativo">
                 <Lock size={12} />
             </Link>
@@ -147,7 +158,6 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
 const App: React.FC = () => {
   const [language, setLanguage] = useState<Language>('es');
   
-  // ✅ NOU: Usar hook amb cache intel·ligent en lloc de fetch cada segon
   const { brandConfig, isLoading } = useBrandConfigWithCache();
 
   useEffect(() => {
@@ -170,7 +180,6 @@ const App: React.FC = () => {
     }
   }, [brandConfig.siteName, brandConfig.favicon]);
 
-  // Opcional: mostrar loading skeleton mentre carrega
   if (isLoading && !brandConfig.siteName) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -189,6 +198,10 @@ const App: React.FC = () => {
           <Route path="/" element={<HomePage lang={language} brandConfig={brandConfig} />} />
           <Route path="/sync" element={<SyncPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          {/* ✅ Noves rutes per pàgines legals */}
+          <Route path="/privacy" element={<PrivacyPolicy lang={language} />} />
+          <Route path="/cookies" element={<CookiesPolicy lang={language} />} />
+          <Route path="/legal" element={<LegalNotice lang={language} />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         
