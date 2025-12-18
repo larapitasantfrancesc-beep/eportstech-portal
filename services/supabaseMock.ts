@@ -387,8 +387,8 @@ export const submitLead = async (data: LeadForm): Promise<{ success: boolean; er
   // Enviar notificació per email
   try {
     const settings = await getNotificationSettings();
-    if (settings.emailNotifications && settings.notificationEmails?.length > 0) {
-      await sendEmailNotification('lead', settings.notificationEmails, {
+    if (settings.notifyOnLead && settings.emailRecipients?.length > 0) {
+      await sendEmailNotification('lead', settings.emailRecipients, {
         email: data.email,
         fullName: data.fullName,
         phone: data.phone,
@@ -429,8 +429,8 @@ export const submitConfiguratorLead = async (leadData: Omit<ConfiguratorLead, 'i
   // Enviar notificació per email
   try {
     const settings = await getNotificationSettings();
-    if (settings.emailNotifications && settings.notificationEmails?.length > 0) {
-      await sendEmailNotification('configurator', settings.notificationEmails, {
+    if (settings.notifyOnLead && settings.emailRecipients?.length > 0) {
+      await sendEmailNotification('configurator', settings.emailRecipients, {
         email: leadData.email,
         selectedItems: leadData.selectedItems
       });
@@ -601,8 +601,8 @@ export const submitCatalogLead = async (email: string, source: string = 'footer'
   // Enviar notificació per email
   try {
     const settings = await getNotificationSettings();
-    if (settings.emailNotifications && settings.notificationEmails?.length > 0) {
-      await sendEmailNotification('catalog', settings.notificationEmails, { email, source });
+    if (settings.notifyOnLead && settings.emailRecipients?.length > 0) {
+      await sendEmailNotification('catalog', settings.emailRecipients, { email, source });
     }
   } catch (notifError) {
     console.warn('⚠️ [submitCatalogLead] Notification failed:', notifError);
