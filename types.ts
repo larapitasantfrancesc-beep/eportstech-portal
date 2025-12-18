@@ -127,6 +127,14 @@ export interface BrandConfig {
   hero: HeroConfig;
   benefits: BenefitsConfig; // New field for editable content
   footer: FooterConfig;
+  catalogUrl?: string;
+  socialMedia?: {
+    linkedin?: string;
+    twitter?: string;
+    facebook?: string;
+    instagram?: string;
+    youtube?: string;
+  };
 }
 
 export interface NotificationSettings {
