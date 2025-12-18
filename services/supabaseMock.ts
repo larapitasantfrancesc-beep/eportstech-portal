@@ -108,7 +108,15 @@ export const getBrandConfig = async (): Promise<BrandConfig> => {
             overlayOpacity: 0.6,
             title: TRANSLATIONS.heroTitle,
             subtitle: TRANSLATIONS.heroSubtitle,
-            ctaText: TRANSLATIONS.ctaButton
+            ctaText: TRANSLATIONS.ctaButton,
+            tagline: { 
+              es: 'Soluciones Empresariales', 
+              ca: 'Solucions Empresarials', 
+              en: 'Business Solutions', 
+              fr: 'Solutions Entreprises', 
+              de: 'Geschäftslösungen', 
+              it: 'Soluzioni Aziendali' 
+            }
         },
         benefits: {
             mainTitle: TRANSLATIONS.benefitsTitle,

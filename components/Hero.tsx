@@ -2,7 +2,7 @@
 import React from 'react';
 import { ArrowRight, Building2 } from 'lucide-react';
 import { HeroConfig, Language } from '../types';
-import { TRANSLATIONS } from '../constants'; // Fallback only
+import { TRANSLATIONS } from '../constants';
 import { trackEvent } from '../services/analytics';
 
 interface HeroProps {
@@ -36,14 +36,23 @@ const Hero: React.FC<HeroProps> = ({ lang, config, onConsultationRequest }) => {
   };
 
   const bgSrc = config.image || "/hq-background.jpg";
-  // Fallback texts if config is loading or empty (shouldn't happen with correct mock init)
   const title = config.title?.[lang] || TRANSLATIONS.heroTitle[lang];
   const subtitle = config.subtitle?.[lang] || TRANSLATIONS.heroSubtitle[lang];
   const ctaText = config.ctaText?.[lang] || TRANSLATIONS.ctaButton[lang];
   
-  // Opacity handling
+  // ✅ NOU: Tagline editable amb fallback per idioma
+  const defaultTaglines: Record<Language, string> = {
+    es: 'Soluciones Empresariales',
+    ca: 'Solucions Empresarials',
+    en: 'Business Solutions',
+    fr: 'Solutions Entreprises',
+    de: 'Geschäftslösungen',
+    it: 'Soluzioni Aziendali'
+  };
+  const tagline = config.tagline?.[lang] || defaultTaglines[lang];
+  
   const opacity = config.overlayOpacity !== undefined ? config.overlayOpacity : 0.6;
-  const imagePosition = config.imagePosition || 'center'; // default to center
+  const imagePosition = config.imagePosition || 'center';
 
   return (
     <div className="relative bg-slate-900 text-white overflow-hidden min-h-[85vh] flex items-center">
@@ -54,18 +63,16 @@ const Hero: React.FC<HeroProps> = ({ lang, config, onConsultationRequest }) => {
           src={bgSrc}
           alt="EportsTech Headquarters" 
           className="w-full h-full object-cover transition-opacity duration-500"
-          style={{ opacity: 1, objectPosition: imagePosition }} // Use dynamic position
+          style={{ opacity: 1, objectPosition: imagePosition }}
         />
-        {/* Dynamic Overlay */}
         <div 
             className="absolute inset-0 bg-slate-900 transition-colors duration-500"
             style={{ backgroundColor: `rgba(15, 23, 42, ${opacity})` }} 
         ></div>
-        {/* Gradient for text readability always present at bottom */}
          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-transparent to-transparent"></div>
       </div>
       
-      {/* Abstract Shapes Overlay - Opacity linked to main overlay for cleanliness */}
+      {/* Abstract Shapes Overlay */}
       <div 
           className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-primary-500 blur-3xl animate-pulse pointer-events-none"
           style={{ opacity: opacity * 0.4 }}
@@ -77,10 +84,10 @@ const Hero: React.FC<HeroProps> = ({ lang, config, onConsultationRequest }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-12">
         <div className="lg:w-3/4 animate-fade-in-up">
-          {/* Business Solutions Tag */}
+          {/* ✅ Business Solutions Tag - ARA EDITABLE */}
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium mb-8 border border-white/20 shadow-lg">
             <Building2 size={16} className="text-primary-300" />
-            <span className="tracking-wide">Soluciones Empresariales</span>
+            <span className="tracking-wide">{tagline}</span>
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-7xl font-bold tracking-tight leading-tight mb-6 drop-shadow-2xl">

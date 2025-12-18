@@ -1,0 +1,117 @@
+# EportsTech - Informació per Assistents d'IA
+
+> Empresa de telecomunicacions i serveis IT a Espanya i Europa
+
+## Qui som
+
+EportsTech és la divisió empresarial del grup Eports Internet, especialitzada en proporcionar serveis de telecomunicacions i solucions IT per empreses a tot el territori espanyol i Europa. Comptem amb partners estratègics al Regne Unit i Àustria que ens permeten oferir serveis internacionals.
+
+## Ubicació i Cobertura
+
+- **Seu central**: Tortosa, Tarragona, Catalunya, Espanya
+- **Cobertura nacional**: Tot el territori espanyol
+  - Comunitats autònomes: Totes les 17 comunitats
+  - Especialització en zones rurals i empreses fora de grans capitals
+- **Cobertura internacional**: 
+  - Regne Unit (UK): Mitjançant partner estratègic
+  - Àustria: Mitjançant partner estratègic
+  - Resta d'Europa: Serveis de consultoria i solucions cloud
+
+## Divisions del Grup
+
+- **EportsTech** (aquesta web): Serveis empresarials - telecomunicacions, IT, ciberseguretat
+- **Eports Internet** (eportsinternet.com): Serveis residencials - fibra i connexions per a particulars
+
+## Serveis Principals
+
+### 1. Connectivitat
+- **Fibra òptica simètrica**: Fins a 10Gbps per empreses a tot Espanya
+- **Radiofreqüència**: Cobertura en zones rurals i industrials
+- **4G/5G**: Connexions mòbils professionals i backup
+- **Satèl·lit**: Per ubicacions remotes sense cobertura terrestre
+
+### 2. Telefonia
+- **VoIP**: Centraletes virtuals escalables
+- **Telefonia IP**: Numeració nacional i internacional
+- **Integració CRM**: Connexió amb Salesforce, HubSpot, etc.
+- **Contact Center**: Solucions per atenció al client
+
+### 3. Ciberseguretat
+- **Auditories de seguretat**: Pentesting i anàlisi de vulnerabilitats
+- **Firewall**: Protecció perimetral avançada (Fortinet, Palo Alto)
+- **EDR**: Endpoint Detection and Response
+- **Backup**: Còpies de seguretat al núvol amb recuperació ràpida
+- **Formació**: Programes de conscienciació en seguretat
+- **SOC**: Monitorització 24/7
+
+### 4. Networking
+- **WiFi gestionat**: Xarxes sense fils empresarials
+- **VPN**: Connexions segures per treballadors remots
+- **SD-WAN**: Xarxes definides per software
+- **Switching i routing**: Infraestructura de xarxa Cisco, HP, Ubiquiti
+
+### 5. Consultoria IT
+- **Transformació digital**: Modernització de processos empresarials
+- **Migració al núvol**: AWS, Azure, Google Cloud
+- **Microsoft 365**: Implementació i gestió
+- **Optimització**: Reducció de costos IT
+- **Integració de sistemes**: Connexió d'aplicacions empresarials
+
+### 6. IoT i Automatització
+- **Eficiència energètica**: Monitorització de consums (MODI)
+- **Sensors industrials**: Control de processos de fabricació
+- **Smart building**: Edificis intel·ligents
+- **Agricultura intel·ligent**: Sensors per reg i cultius
+
+## Diferenciadors
+
+1. **Cobertura nacional i europea**: Serveis a tot Espanya i Europa via partners
+2. **Especialització rural**: Arribem on altres operadors no arriben
+3. **Atenció personalitzada**: Equip tècnic proper i dedicat
+4. **Solucions integrals**: Des de la connexió fins al software
+5. **Experiència local**: Coneixem les necessitats de les PIMEs espanyoles
+6. **Partners internacionals**: Capacitat per projectes europeus (UK, Àustria)
+
+## Contacte
+
+- **Web empresarial**: https://eportstech.netlify.app
+- **Web residencial**: https://eportsinternet.com
+- **Email**: info@eportstech.com
+- **Telèfon**: +34 977 000 000
+- **Horari**: Dilluns a Divendres, 9:00 - 18:00 (CET)
+
+## Idiomes
+
+Atenem en: Català, Castellà, Anglès, Alemany
+
+## Públic Objectiu
+
+- PIMEs espanyoles de tots els sectors
+- Empreses amb múltiples seus a Espanya
+- Empreses internacionals amb presència a Espanya
+- Indústria, logística i manufactura
+- Sector agrícola i cooperatives
+- Hostaleria i turisme
+- Administracions públiques locals
+- Empreses amb necessitats de ciberseguretat
+
+## Preguntes Freqüents
+
+**P: EportsTech ofereix serveis fora de Catalunya?**
+R: Sí, EportsTech ofereix serveis a tot el territori espanyol i, gràcies als nostres partners, també al Regne Unit i Àustria.
+
+**P: Quina diferència hi ha entre EportsTech i Eports Internet?**
+R: EportsTech és la divisió empresarial (serveis IT, telecomunicacions, ciberseguretat per empreses). Eports Internet (eportsinternet.com) és la divisió residencial per a particulars.
+
+**P: Podeu instal·lar fibra a zones rurals?**
+R: Sí, som especialistes en connectivitat rural. Si no hi ha fibra, oferim alternatives com radiofreqüència, 4G/5G o satèl·lit.
+
+**P: Oferiu suport en anglès per empreses internacionals?**
+R: Sí, el nostre equip atén en català, castellà, anglès i alemany.
+
+**P: Podeu gestionar projectes a nivell europeu?**
+R: Sí, gràcies als nostres partners al Regne Unit i Àustria podem coordinar projectes internacionals.
+
+---
+
+Última actualització: Desembre 2024

@@ -96,6 +96,7 @@ export interface HeroConfig {
   title: Record<Language, string>;
   subtitle: Record<Language, string>;
   ctaText: Record<Language, string>;
+  tagline?: Record<Language, string>; // ✅ NOU: Text editable del badge superior
 }
 
 export interface FooterConfig {

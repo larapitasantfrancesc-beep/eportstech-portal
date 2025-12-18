@@ -1,0 +1,89 @@
+# robots.txt per EportsTech
+# Optimitzat per SEO i AEO (Answer Engine Optimization)
+
+# ============================================
+# CRAWLERS GENERALS (Google, Bing, etc.)
+# ============================================
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /.netlify/
+
+# ============================================
+# CRAWLERS D'IA - PERMETRE ACCÉS
+# ============================================
+
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+
+# OpenAI SearchGPT
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+
+User-agent: Claude-Web
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+
+# Google Gemini / Bard
+User-agent: Google-Extended
+Allow: /
+
+# Microsoft Copilot / Bing
+User-agent: bingbot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# Meta AI
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+# Apple (Siri, etc.)
+User-agent: Applebot
+Allow: /
+
+# ============================================
+# CRAWLERS DE SCRAPERS - BLOQUEJAR
+# ============================================
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+# ============================================
+# SITEMAP
+# ============================================
+Sitemap: https://eportstech.netlify.app/sitemap.xml
+
+# ============================================
+# HOST
+# ============================================
+Host: https://eportstech.netlify.app

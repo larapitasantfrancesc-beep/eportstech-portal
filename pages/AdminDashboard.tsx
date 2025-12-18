@@ -213,13 +213,13 @@ const AdminDashboard: React.FC = () => {
       }
   };
 
-  const handleHeroTextChange = (field: 'title' | 'subtitle' | 'ctaText', value: string) => {
+  const handleHeroTextChange = (field: 'title' | 'subtitle' | 'ctaText' | 'tagline', value: string) => {
       setBrandConfig(prev => ({
           ...prev,
           hero: {
               ...prev.hero,
               [field]: {
-                  ...prev.hero[field],
+                  ...(prev.hero as any)[field],
                   [heroEditLang]: value
               }
           }
@@ -753,6 +753,18 @@ const AdminDashboard: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
+                            {/* ✅ NOU: Tagline editable */}
+                            <div>
+                                <label className="block text-xs font-medium text-gray-500 uppercase">Etiqueta Superior (Tagline)</label>
+                                <input 
+                                    type="text"
+                                    placeholder="Ej: Soluciones Empresariales"
+                                    value={(brandConfig.hero as any).tagline?.[heroEditLang] || ''}
+                                    onChange={(e) => handleHeroTextChange('tagline' as any, e.target.value)}
+                                    className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
+                                />
+                                <p className="text-xs text-gray-400 mt-1">Text que apareix al badge sobre el títol</p>
+                            </div>
                             <div>
                                 <label className="block text-xs font-medium text-gray-500 uppercase">Título Principal</label>
                                 <input 

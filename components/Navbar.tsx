@@ -1,7 +1,6 @@
 
-
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Globe, Image as ImageIcon } from 'lucide-react';
+import { Menu, X, Globe, Image as ImageIcon, Home } from 'lucide-react';
 import { SUPPORTED_LANGUAGES, TRANSLATIONS } from '../constants';
 import { Language } from '../types';
 import { Link, useLocation } from 'react-router-dom';
@@ -12,6 +11,16 @@ interface NavbarProps {
   setLanguage: (lang: Language) => void;
   logoUrl?: string;
 }
+
+// ✅ Traduccions per "Eports Residencial"
+const RESIDENTIAL_TEXT: Record<Language, string> = {
+  es: 'Eports Residencial',
+  ca: 'Eports Residencial',
+  en: 'Eports Residential',
+  fr: 'Eports Résidentiel',
+  de: 'Eports Privat',
+  it: 'Eports Residenziale'
+};
 
 const Navbar: React.FC<NavbarProps> = ({ currentLang, setLanguage, logoUrl }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,12 +35,14 @@ const Navbar: React.FC<NavbarProps> = ({ currentLang, setLanguage, logoUrl }) =>
     trackEvent('language_change', { language: lang });
   };
 
-  // Reset error state if logoUrl changes (e.g. user uploads new logo in admin)
+  const handleResidentialClick = () => {
+    trackEvent('external_link', { destination: 'eportsinternet.com' });
+  };
+
   useEffect(() => {
     setImgError(false);
   }, [logoUrl]);
 
-  // Use the prop logoUrl or fallback to default
   const logoSrc = logoUrl || "/logo-blue.png";
 
   return (
@@ -50,7 +61,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentLang, setLanguage, logoUrl }) =>
                     onError={() => setImgError(true)}
                   />
                 ) : (
-                  /* Fallback placeholder if image fails to load */
                   <div className="h-14 px-4 flex items-center justify-center border-2 border-dashed border-gray-200 rounded bg-gray-50 text-gray-400 text-xs font-bold tracking-widest gap-2">
                     <ImageIcon size={16} />
                     <span>LOGO</span>
@@ -78,6 +88,18 @@ const Navbar: React.FC<NavbarProps> = ({ currentLang, setLanguage, logoUrl }) =>
                   {TRANSLATIONS.navHome[currentLang]}
               </Link>
             )}
+            
+            {/* ✅ NOU: Eports Residencial - Obre en nova finestra */}
+            <a 
+              href="https://eportsinternet.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={handleResidentialClick}
+              className="flex items-center gap-1.5 text-primary-600 hover:text-primary-700 font-medium transition-colors text-sm uppercase tracking-wide border border-primary-200 bg-primary-50 hover:bg-primary-100 px-3 py-1.5 rounded-full"
+            >
+              <Home size={14} />
+              {RESIDENTIAL_TEXT[currentLang]}
+            </a>
             
             {/* Language Dropdown */}
             <div className="relative group">
@@ -129,6 +151,21 @@ const Navbar: React.FC<NavbarProps> = ({ currentLang, setLanguage, logoUrl }) =>
                     {TRANSLATIONS.navHome[currentLang]}
                 </Link>
              )}
+            
+            {/* ✅ NOU: Eports Residencial (Mòbil) */}
+            <a 
+              href="https://eportsinternet.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={() => {
+                handleResidentialClick();
+                setIsOpen(false);
+              }}
+              className="flex items-center gap-2 px-3 py-3 text-base font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-md"
+            >
+              <Home size={18} />
+              {RESIDENTIAL_TEXT[currentLang]}
+            </a>
             
             <div className="border-t border-gray-100 mt-4 pt-4">
               <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Language</p>
