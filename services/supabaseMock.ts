@@ -477,3 +477,120 @@ export const updateNotificationSettings = async (settings: NotificationSettings)
     console.log('✅ [updateNotificationSettings] Success');
     return true;
 };
+
+// =====================================================
+// CATALOG LEADS (Descàrregues de Catàleg)
+// =====================================================
+
+export interface CatalogLead {
+  id?: string;
+  email: string;
+  source: string;
+  created_at?: string;
+}
+
+// ✅ Enviar catalog lead
+export const submitCatalogLead = async (email: string, source: string = 'footer'): Promise<{ success: boolean }> => {
+  console.log('📤 [submitCatalogLead] Submitting...', email, source);
+  
+  const { error } = await supabase
+    .from('catalog_leads')
+    .insert([{ 
+      email, 
+      source,
+      created_at: new Date().toISOString()
+    }]);
+
+  if (error) {
+    console.error('❌ [submitCatalogLead] Error:', error);
+    return { success: false };
+  }
+  
+  console.log('✅ [submitCatalogLead] Success');
+  return { success: true };
+};
+
+// ✅ Obtenir catalog leads
+export const getCatalogLeads = async (): Promise<CatalogLead[]> => {
+  console.log('📤 [getCatalogLeads] Fetching from Supabase...');
+  const { data, error } = await supabase
+    .from('catalog_leads')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('❌ [getCatalogLeads] Error:', error);
+    return [];
+  }
+
+  console.log('✅ [getCatalogLeads] Loaded', data?.length || 0, 'catalog leads');
+  return data as CatalogLead[] || [];
+};
+
+// ✅ Eliminar catalog lead
+export const deleteCatalogLead = async (id: string): Promise<boolean> => {
+  const { error } = await supabase
+    .from('catalog_leads')
+    .delete()
+    .eq('id', id);
+  
+  if (error) {
+    console.error('❌ [deleteCatalogLead] Error:', error);
+    return false;
+  }
+  return true;
+};
+
+// =====================================================
+// SOCIAL MEDIA CONFIG
+// =====================================================
+
+export interface SocialMediaConfig {
+  linkedin?: string;
+  twitter?: string;
+  facebook?: string;
+  instagram?: string;
+  youtube?: string;
+  catalogUrl?: string;
+}
+
+// ✅ Obtenir configuració social media (dins brand_config)
+export const getSocialMediaConfig = async (): Promise<SocialMediaConfig> => {
+  const { data, error } = await supabase
+    .from('brand_config')
+    .select('social_media, catalog_url')
+    .single();
+
+  if (error || !data) {
+    console.warn('⚠️ [getSocialMediaConfig] Error or no data:', error);
+    return {};
+  }
+
+  return {
+    ...(data.social_media || {}),
+    catalogUrl: data.catalog_url || 'https://drive.google.com/uc?export=download&id=1vweh1bRKZO7lpRudkzjoXDxzxc-s-SGm'
+  };
+};
+
+// ✅ Actualitzar configuració social media
+export const updateSocialMediaConfig = async (config: SocialMediaConfig): Promise<boolean> => {
+  console.log('📤 [updateSocialMediaConfig] Updating...', config);
+  
+  const { catalogUrl, ...socialMedia } = config;
+  
+  const { error } = await supabase
+    .from('brand_config')
+    .update({ 
+      social_media: socialMedia,
+      catalog_url: catalogUrl
+    })
+    .eq('id', 1);
+  
+  if (error) {
+    console.error('❌ [updateSocialMediaConfig] Error:', error);
+    return false;
+  }
+  
+  console.log('✅ [updateSocialMediaConfig] Success');
+  return true;
+};

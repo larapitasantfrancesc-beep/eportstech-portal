@@ -450,15 +450,19 @@ const NeedsAssessment: React.FC<NeedsAssessmentProps> = ({ lang, onRecommendatio
 
   const handleRequestQuote = () => {
     const selected = getRecommendations().filter(r => selectedRecommendations.includes(r.id));
-    // Scroll to contact form
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-    // Podríem passar les recomanacions al parent si cal
+    
+    // Primer passar les recomanacions al parent
     if (onRecommendations) {
       onRecommendations(selected);
     }
+    
+    // Després fer scroll al formulari (amb petit delay per assegurar que s'actualitza l'estat)
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const recommendations = getRecommendations();

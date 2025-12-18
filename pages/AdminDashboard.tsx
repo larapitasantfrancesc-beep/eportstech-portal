@@ -4,13 +4,14 @@ import {
   loginMock, logoutMock, checkAuth, getBrandConfig, updateBrandConfig, 
   getConfiguratorLeads, getNotificationSettings, updateNotificationSettings,
   getServices, updateServices, getConfiguratorItems, saveConfiguratorItem, deleteConfiguratorItem, updateConfiguratorItemsOrder,
-  getCustomSections, getBotConfig, updateBotConfig, getLeads, deleteLead, deleteConfiguratorLead
+  getCustomSections, getBotConfig, updateBotConfig, getLeads, deleteLead, deleteConfiguratorLead,
+  getCatalogLeads, deleteCatalogLead, CatalogLead, updateSocialMediaConfig, SocialMediaConfig
 } from '../services/supabaseMock';
 import { 
   FileText, Settings, LogOut, Users, Database, Image as ImageIcon, Upload, Save, 
   LayoutDashboard, ShoppingBag, Bell, Plus, Trash2, Edit2, CheckCircle, Languages, Monitor,
   AlignLeft, Move, MapPin, Phone, X, AlertTriangle, Clock, Zap, MessageSquare, BrainCircuit, Mic,
-  Eye, EyeOff, ArrowUp, ArrowDown, BookOpen, Mail, Star, Globe, Lock
+  Eye, EyeOff, ArrowUp, ArrowDown, BookOpen, Mail, Star, Globe, Lock, FileDown, Linkedin, Twitter, Facebook, Instagram, Youtube, Link
 } from 'lucide-react';
 import { LeadForm, BrandConfig, ConfiguratorLead, NotificationSettings, Service, ConfiguratorItem, Language, DynamicSection, ServiceCategory, BotConfig } from '../types';
 import { SUPPORTED_LANGUAGES } from '../constants';
@@ -92,6 +93,19 @@ const AdminDashboard: React.FC = () => {
   // Sections State
   const [customSections, setCustomSections] = useState<DynamicSection[]>([]);
 
+  // Catalog Leads State
+  const [catalogLeads, setCatalogLeads] = useState<CatalogLead[]>([]);
+
+  // Social Media Config State
+  const [socialMediaConfig, setSocialMediaConfig] = useState<SocialMediaConfig>({
+    linkedin: '',
+    twitter: '',
+    facebook: '',
+    instagram: '',
+    youtube: '',
+    catalogUrl: ''
+  });
+
   useEffect(() => {
     const init = async () => {
        const auth = await checkAuth();
@@ -172,6 +186,10 @@ const AdminDashboard: React.FC = () => {
 
       const bConfig = await getBotConfig();
       setBotConfig(bConfig);
+
+      // Carregar catalog leads
+      const catLeads = await getCatalogLeads();
+      setCatalogLeads(catLeads);
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -555,6 +573,9 @@ const AdminDashboard: React.FC = () => {
           <button onClick={() => setActiveTab('custom_leads')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'custom_leads' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
             <ShoppingBag size={20} /> <span>Paquetes Personalizados</span>
           </button>
+          <button onClick={() => setActiveTab('catalog_leads')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'catalog_leads' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
+            <FileDown size={20} /> <span>Descargas Catálogo</span>
+          </button>
           <div className="pt-4 pb-2 px-4 text-xs font-semibold text-primary-400 uppercase">CMS</div>
           <button onClick={() => setActiveTab('brand')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'brand' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
             <Monitor size={20} /> <span>Kit de Marca & Hero</span>
@@ -564,6 +585,9 @@ const AdminDashboard: React.FC = () => {
           </button>
           <button onClick={() => setActiveTab('configurator')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'configurator' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
             <Settings size={20} /> <span>Configurador Items</span>
+          </button>
+          <button onClick={() => setActiveTab('social')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'social' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
+            <Link size={20} /> <span>Redes Sociales</span>
           </button>
           <div className="pt-4 pb-2 px-4 text-xs font-semibold text-primary-400 uppercase">Config</div>
           <button onClick={() => setActiveTab('bot')} className={`flex items-center gap-3 w-full px-4 py-3 rounded-lg transition-colors ${activeTab === 'bot' ? 'bg-primary-700' : 'hover:bg-primary-800'}`}>
@@ -1621,6 +1645,223 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {/* === CATALOG LEADS === */}
+        {activeTab === 'catalog_leads' && (
+          <div className="animate-fade-in">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <FileDown className="text-amber-600" /> Descargas de Catálogo
+              <span className="text-sm font-normal text-gray-500">({catalogLeads.length} total)</span>
+            </h2>
+            
+            {catalogLeads.length === 0 ? (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+                <FileDown size={48} className="mx-auto mb-4 text-gray-300" />
+                <p>No hay descargas de catálogo todavía.</p>
+                <p className="text-sm mt-2">Los emails aparecerán aquí cuando alguien descargue el catálogo desde el footer.</p>
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Origen</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {catalogLeads.map((lead: CatalogLead) => (
+                        <tr key={lead.id} className="hover:bg-gray-50">
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <a href={`mailto:${lead.email}`} className="text-primary-600 hover:text-primary-800 font-medium">
+                              {lead.email}
+                            </a>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="px-2 py-1 text-xs font-medium bg-amber-100 text-amber-800 rounded-full">
+                              {lead.source || 'footer'}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-gray-500 text-sm">
+                            {lead.created_at ? new Date(lead.created_at).toLocaleDateString('es-ES', {
+                              day: '2-digit',
+                              month: 'short',
+                              year: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            }) : '-'}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <button 
+                              onClick={async () => {
+                                if (confirm('¿Eliminar este registro?')) {
+                                  const success = await deleteCatalogLead(lead.id!);
+                                  if (success) {
+                                    setCatalogLeads(catalogLeads.filter((l: CatalogLead) => l.id !== lead.id));
+                                  }
+                                }
+                              }}
+                              className="text-red-400 hover:text-red-600 p-1"
+                              title="Eliminar registro"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+            
+            {/* Export button */}
+            {catalogLeads.length > 0 && (
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={() => {
+                    const csv = ['Email,Origen,Fecha'];
+                    catalogLeads.forEach(lead => {
+                      csv.push(`${lead.email},${lead.source || 'footer'},${lead.created_at || ''}`);
+                    });
+                    const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'catalog-leads.csv';
+                    a.click();
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                >
+                  <FileDown size={18} /> Exportar CSV
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* === SOCIAL MEDIA & CATALOG CONFIG === */}
+        {activeTab === 'social' && (
+          <div className="max-w-3xl animate-fade-in">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <Link className="text-primary-600" /> Redes Sociales y Catálogo
+            </h2>
+            
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
+              {/* Catalog URL */}
+              <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+                <label className="block text-sm font-semibold text-amber-800 mb-2 flex items-center gap-2">
+                  <FileDown size={18} /> URL del Catálogo PDF
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://example.com/catalogo.pdf o /catalogo.pdf"
+                  className="w-full rounded-lg border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                  value={socialMediaConfig.catalogUrl || ''}
+                  onChange={(e) => setSocialMediaConfig({...socialMediaConfig, catalogUrl: e.target.value})}
+                />
+                <p className="text-xs text-amber-600 mt-2">
+                  Este es el PDF que se descargará cuando un usuario introduzca su email en el footer.
+                </p>
+              </div>
+
+              <hr className="border-gray-200" />
+
+              {/* Social Media Links */}
+              <div>
+                <h3 className="font-semibold text-gray-800 mb-4">Enlaces Redes Sociales</h3>
+                <p className="text-sm text-gray-500 mb-4">Deja en blanco los que no tengas. Solo se mostrarán en el footer los que tengan URL.</p>
+                
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+                      <Linkedin size={20} />
+                    </div>
+                    <input
+                      type="url"
+                      placeholder="https://linkedin.com/company/..."
+                      className="flex-1 rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                      value={socialMediaConfig.linkedin || ''}
+                      onChange={(e) => setSocialMediaConfig({...socialMediaConfig, linkedin: e.target.value})}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-sky-500 rounded-lg flex items-center justify-center text-white">
+                      <Twitter size={20} />
+                    </div>
+                    <input
+                      type="url"
+                      placeholder="https://twitter.com/..."
+                      className="flex-1 rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                      value={socialMediaConfig.twitter || ''}
+                      onChange={(e) => setSocialMediaConfig({...socialMediaConfig, twitter: e.target.value})}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white">
+                      <Facebook size={20} />
+                    </div>
+                    <input
+                      type="url"
+                      placeholder="https://facebook.com/..."
+                      className="flex-1 rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                      value={socialMediaConfig.facebook || ''}
+                      onChange={(e) => setSocialMediaConfig({...socialMediaConfig, facebook: e.target.value})}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-500 rounded-lg flex items-center justify-center text-white">
+                      <Instagram size={20} />
+                    </div>
+                    <input
+                      type="url"
+                      placeholder="https://instagram.com/..."
+                      className="flex-1 rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                      value={socialMediaConfig.instagram || ''}
+                      onChange={(e) => setSocialMediaConfig({...socialMediaConfig, instagram: e.target.value})}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center text-white">
+                      <Youtube size={20} />
+                    </div>
+                    <input
+                      type="url"
+                      placeholder="https://youtube.com/..."
+                      className="flex-1 rounded-lg border-gray-300 focus:border-primary-500 focus:ring-primary-500"
+                      value={socialMediaConfig.youtube || ''}
+                      onChange={(e) => setSocialMediaConfig({...socialMediaConfig, youtube: e.target.value})}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Save Button */}
+              <div className="pt-4 border-t border-gray-200">
+                <button
+                  onClick={async () => {
+                    const success = await updateSocialMediaConfig(socialMediaConfig);
+                    if (success) {
+                      alert('Configuración guardada correctamente');
+                    } else {
+                      alert('Error al guardar la configuración');
+                    }
+                  }}
+                  className="w-full py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 flex items-center justify-center gap-2"
+                >
+                  <Save size={18} /> Guardar Cambios
+                </button>
+              </div>
+            </div>
           </div>
         )}
 

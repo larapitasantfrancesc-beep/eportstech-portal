@@ -35,6 +35,30 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
   const [customMessage, setCustomMessage] = useState<string>('');
   const [prefilledService, setPrefilledService] = useState<string>('');
 
+  // Handler per recomanacions del NeedsAssessment
+  const handleNeedsAssessmentRequest = (recommendations: any[]) => {
+    const itemsList = recommendations.map(rec => `- ${rec.title[lang]}: ${rec.description[lang]}`).join('\n');
+    
+    let intro = "";
+    switch (lang) {
+        case 'es': intro = "Hola, tras usar vuestro asesor virtual, estoy interesado en recibir información sobre las siguientes soluciones recomendadas:\n\n"; break;
+        case 'ca': intro = "Hola, després d'usar el vostre assessor virtual, estic interessat en rebre informació sobre les següents solucions recomanades:\n\n"; break;
+        case 'fr': intro = "Bonjour, après avoir utilisé votre conseiller virtuel, je souhaite recevoir des informations sur les solutions recommandées suivantes:\n\n"; break;
+        case 'de': intro = "Hallo, nach der Nutzung Ihres virtuellen Beraters interessiere ich mich für folgende empfohlene Lösungen:\n\n"; break;
+        case 'it': intro = "Salve, dopo aver utilizzato il vostro consulente virtuale, sono interessato alle seguenti soluzioni consigliate:\n\n"; break;
+        default: intro = "Hello, after using your virtual advisor, I am interested in receiving information about the following recommended solutions:\n\n";
+    }
+
+    const msg = `${intro}${itemsList}`;
+    setCustomMessage(msg);
+    setPrefilledService('Virtual Advisor Recommendations');
+
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const handleConfiguratorRequest = (selectedItems: ConfiguratorItem[]) => {
     const itemsList = selectedItems.map(item => `- ${item.title[lang]} (${item.benefit[lang]})`).join('\n');
     
@@ -111,7 +135,7 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
       <Hero lang={lang} config={brandConfig.hero} onConsultationRequest={handleConsultationRequest} />
       <BenefitsSection lang={lang} config={brandConfig.benefits} />
       <ServicesSection lang={lang} onServiceRequest={handleServiceRequest} />
-      <NeedsAssessment lang={lang} />
+      <NeedsAssessment lang={lang} onRecommendations={handleNeedsAssessmentRequest} />
       <SolutionsConfigurator lang={lang} onRequestQuote={handleConfiguratorRequest} />
       <ContactForm 
           lang={lang} 
