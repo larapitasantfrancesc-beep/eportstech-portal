@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Cookie, X, Check, Settings } from 'lucide-react';
+import { Cookie, Check, Settings, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Language } from '../types';
 
@@ -9,8 +9,7 @@ interface CookieConsentProps {
 
 // Traduccions
 const TRANSLATIONS: Record<Language, {
-  title: string;
-  description: string;
+  message: string;
   acceptAll: string;
   rejectAll: string;
   customize: string;
@@ -22,100 +21,100 @@ const TRANSLATIONS: Record<Language, {
   marketing: string;
   marketingDesc: string;
   moreInfo: string;
+  cookiesPolicy: string;
 }> = {
   es: {
-    title: 'Usamos cookies',
-    description: 'Utilizamos cookies propias y de terceros para mejorar tu experiencia, analizar el tráfico y mostrarte contenido personalizado.',
-    acceptAll: 'Aceptar todas',
-    rejectAll: 'Rechazar todas',
+    message: 'Utilizamos cookies para mejorar tu experiencia.',
+    acceptAll: 'Aceptar',
+    rejectAll: 'Rechazar',
     customize: 'Configurar',
-    save: 'Guardar preferencias',
+    save: 'Guardar',
     necessary: 'Necesarias',
-    necessaryDesc: 'Esenciales para el funcionamiento del sitio web. No se pueden desactivar.',
+    necessaryDesc: 'Esenciales para el funcionamiento.',
     analytics: 'Analíticas',
-    analyticsDesc: 'Nos ayudan a entender cómo usas el sitio web mediante Google Analytics.',
+    analyticsDesc: 'Google Analytics para estadísticas.',
     marketing: 'Marketing',
-    marketingDesc: 'Permiten mostrarte anuncios relevantes y medir su efectividad.',
-    moreInfo: 'Más información en nuestra'
+    marketingDesc: 'Anuncios personalizados.',
+    moreInfo: 'Más info',
+    cookiesPolicy: 'Política de Cookies'
   },
   ca: {
-    title: 'Utilitzem cookies',
-    description: 'Utilitzem cookies pròpies i de tercers per millorar la teva experiència, analitzar el trànsit i mostrar-te contingut personalitzat.',
-    acceptAll: 'Acceptar totes',
-    rejectAll: 'Rebutjar totes',
+    message: 'Utilitzem cookies per millorar la teva experiència.',
+    acceptAll: 'Acceptar',
+    rejectAll: 'Rebutjar',
     customize: 'Configurar',
-    save: 'Desar preferències',
+    save: 'Desar',
     necessary: 'Necessàries',
-    necessaryDesc: 'Essencials per al funcionament del lloc web. No es poden desactivar.',
+    necessaryDesc: 'Essencials per al funcionament.',
     analytics: 'Analítiques',
-    analyticsDesc: 'Ens ajuden a entendre com uses el lloc web mitjançant Google Analytics.',
+    analyticsDesc: 'Google Analytics per estadístiques.',
     marketing: 'Màrqueting',
-    marketingDesc: 'Permeten mostrar-te anuncis rellevants i mesurar la seva efectivitat.',
-    moreInfo: 'Més informació a la nostra'
+    marketingDesc: 'Anuncis personalitzats.',
+    moreInfo: 'Més info',
+    cookiesPolicy: 'Política de Cookies'
   },
   en: {
-    title: 'We use cookies',
-    description: 'We use our own and third-party cookies to improve your experience, analyze traffic and show you personalized content.',
-    acceptAll: 'Accept all',
-    rejectAll: 'Reject all',
-    customize: 'Customize',
-    save: 'Save preferences',
+    message: 'We use cookies to improve your experience.',
+    acceptAll: 'Accept',
+    rejectAll: 'Reject',
+    customize: 'Settings',
+    save: 'Save',
     necessary: 'Necessary',
-    necessaryDesc: 'Essential for the website to function. Cannot be disabled.',
+    necessaryDesc: 'Essential for functionality.',
     analytics: 'Analytics',
-    analyticsDesc: 'Help us understand how you use the website through Google Analytics.',
+    analyticsDesc: 'Google Analytics for statistics.',
     marketing: 'Marketing',
-    marketingDesc: 'Allow us to show you relevant ads and measure their effectiveness.',
-    moreInfo: 'More information in our'
+    marketingDesc: 'Personalized ads.',
+    moreInfo: 'More info',
+    cookiesPolicy: 'Cookies Policy'
   },
   fr: {
-    title: 'Nous utilisons des cookies',
-    description: 'Nous utilisons nos propres cookies et ceux de tiers pour améliorer votre expérience, analyser le trafic et vous montrer du contenu personnalisé.',
-    acceptAll: 'Tout accepter',
-    rejectAll: 'Tout refuser',
-    customize: 'Personnaliser',
-    save: 'Enregistrer les préférences',
+    message: 'Nous utilisons des cookies pour améliorer votre expérience.',
+    acceptAll: 'Accepter',
+    rejectAll: 'Refuser',
+    customize: 'Paramètres',
+    save: 'Sauvegarder',
     necessary: 'Nécessaires',
-    necessaryDesc: 'Essentiels au fonctionnement du site web. Ne peuvent pas être désactivés.',
+    necessaryDesc: 'Essentiels au fonctionnement.',
     analytics: 'Analytiques',
-    analyticsDesc: 'Nous aident à comprendre comment vous utilisez le site web via Google Analytics.',
+    analyticsDesc: 'Google Analytics pour les statistiques.',
     marketing: 'Marketing',
-    marketingDesc: 'Permettent de vous montrer des publicités pertinentes et de mesurer leur efficacité.',
-    moreInfo: 'Plus d\'informations dans notre'
+    marketingDesc: 'Publicités personnalisées.',
+    moreInfo: 'Plus d\'info',
+    cookiesPolicy: 'Politique de Cookies'
   },
   de: {
-    title: 'Wir verwenden Cookies',
-    description: 'Wir verwenden eigene Cookies und Cookies von Drittanbietern, um Ihre Erfahrung zu verbessern, den Verkehr zu analysieren und Ihnen personalisierte Inhalte zu zeigen.',
-    acceptAll: 'Alle akzeptieren',
-    rejectAll: 'Alle ablehnen',
-    customize: 'Anpassen',
-    save: 'Einstellungen speichern',
+    message: 'Wir verwenden Cookies, um Ihre Erfahrung zu verbessern.',
+    acceptAll: 'Akzeptieren',
+    rejectAll: 'Ablehnen',
+    customize: 'Einstellungen',
+    save: 'Speichern',
     necessary: 'Notwendig',
-    necessaryDesc: 'Wesentlich für das Funktionieren der Website. Können nicht deaktiviert werden.',
+    necessaryDesc: 'Wesentlich für die Funktionalität.',
     analytics: 'Analytik',
-    analyticsDesc: 'Helfen uns zu verstehen, wie Sie die Website über Google Analytics nutzen.',
+    analyticsDesc: 'Google Analytics für Statistiken.',
     marketing: 'Marketing',
-    marketingDesc: 'Ermöglichen es uns, Ihnen relevante Anzeigen zu zeigen und deren Wirksamkeit zu messen.',
-    moreInfo: 'Weitere Informationen in unserer'
+    marketingDesc: 'Personalisierte Werbung.',
+    moreInfo: 'Mehr Info',
+    cookiesPolicy: 'Cookie-Richtlinie'
   },
   it: {
-    title: 'Utilizziamo i cookie',
-    description: 'Utilizziamo cookie propri e di terze parti per migliorare la tua esperienza, analizzare il traffico e mostrarti contenuti personalizzati.',
-    acceptAll: 'Accetta tutti',
-    rejectAll: 'Rifiuta tutti',
-    customize: 'Personalizza',
-    save: 'Salva preferenze',
+    message: 'Utilizziamo i cookie per migliorare la tua esperienza.',
+    acceptAll: 'Accetta',
+    rejectAll: 'Rifiuta',
+    customize: 'Impostazioni',
+    save: 'Salva',
     necessary: 'Necessari',
-    necessaryDesc: 'Essenziali per il funzionamento del sito web. Non possono essere disattivati.',
+    necessaryDesc: 'Essenziali per il funzionamento.',
     analytics: 'Analitici',
-    analyticsDesc: 'Ci aiutano a capire come utilizzi il sito web tramite Google Analytics.',
+    analyticsDesc: 'Google Analytics per le statistiche.',
     marketing: 'Marketing',
-    marketingDesc: 'Permettono di mostrarti annunci pertinenti e misurarne l\'efficacia.',
-    moreInfo: 'Maggiori informazioni nella nostra'
+    marketingDesc: 'Annunci personalizzati.',
+    moreInfo: 'Più info',
+    cookiesPolicy: 'Politica dei Cookie'
   }
 };
 
-// Tipus de consentiment
 interface ConsentState {
   necessary: boolean;
   analytics: boolean;
@@ -126,7 +125,7 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ lang }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [consent, setConsent] = useState<ConsentState>({
-    necessary: true, // Sempre activat
+    necessary: true,
     analytics: false,
     marketing: false
   });
@@ -134,26 +133,21 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ lang }) => {
   const t = TRANSLATIONS[lang] || TRANSLATIONS.es;
 
   useEffect(() => {
-    // Comprovar si ja hi ha consentiment guardat
     const savedConsent = localStorage.getItem('cookie_consent');
     if (!savedConsent) {
-      // Mostrar banner si no hi ha consentiment
       setIsVisible(true);
-      // Inicialitzar Google Consent Mode amb tot denegat
       updateGoogleConsent({
         necessary: true,
         analytics: false,
         marketing: false
       });
     } else {
-      // Aplicar consentiment guardat
       const parsed = JSON.parse(savedConsent);
       setConsent(parsed);
       updateGoogleConsent(parsed);
     }
   }, []);
 
-  // Actualitzar Google Consent Mode v2
   const updateGoogleConsent = (consentState: ConsentState) => {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('consent', 'update', {
@@ -173,26 +167,15 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ lang }) => {
     localStorage.setItem('cookie_consent_date', new Date().toISOString());
     updateGoogleConsent(consentState);
     setIsVisible(false);
+    setShowSettings(false);
   };
 
   const handleAcceptAll = () => {
-    const allAccepted = {
-      necessary: true,
-      analytics: true,
-      marketing: true
-    };
-    setConsent(allAccepted);
-    saveConsent(allAccepted);
+    saveConsent({ necessary: true, analytics: true, marketing: true });
   };
 
   const handleRejectAll = () => {
-    const allRejected = {
-      necessary: true,
-      analytics: false,
-      marketing: false
-    };
-    setConsent(allRejected);
-    saveConsent(allRejected);
+    saveConsent({ necessary: true, analytics: false, marketing: false });
   };
 
   const handleSavePreferences = () => {
@@ -202,129 +185,137 @@ const CookieConsent: React.FC<CookieConsentProps> = ({ lang }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-end justify-center sm:items-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto animate-fade-in-up">
-        {/* Header */}
-        <div className="p-6 pb-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 bg-amber-100 rounded-xl">
-              <Cookie className="text-amber-600" size={24} />
+    <>
+      {/* Banner inferior */}
+      <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-white border-t border-gray-200 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            {/* Missatge */}
+            <div className="flex items-center gap-3 text-sm text-gray-600">
+              <Cookie className="text-amber-500 flex-shrink-0" size={20} />
+              <span>
+                {t.message}{' '}
+                <Link 
+                  to="/cookies" 
+                  className="text-primary-600 hover:underline"
+                  onClick={() => setIsVisible(false)}
+                >
+                  {t.moreInfo}
+                </Link>
+              </span>
             </div>
-            <h2 className="text-xl font-bold text-gray-900">{t.title}</h2>
-          </div>
-          <p className="text-gray-600 text-sm leading-relaxed">
-            {t.description}
-          </p>
-          <p className="text-gray-500 text-xs mt-2">
-            {t.moreInfo}{' '}
-            <Link to="/cookies" className="text-primary-600 hover:underline" onClick={() => setIsVisible(false)}>
-              {lang === 'es' ? 'Política de Cookies' : lang === 'ca' ? 'Política de Cookies' : 'Cookies Policy'}
-            </Link>.
-          </p>
-        </div>
 
-        {/* Settings Panel */}
-        {showSettings && (
-          <div className="px-6 py-4 border-t border-gray-100 space-y-4">
-            {/* Necessary */}
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <span className="font-medium text-gray-900">{t.necessary}</span>
-                  <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded">
-                    {lang === 'es' ? 'Siempre activas' : lang === 'ca' ? 'Sempre actives' : 'Always active'}
-                  </span>
-                </div>
-                <p className="text-xs text-gray-500 mt-1">{t.necessaryDesc}</p>
+            {/* Botons */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button
+                onClick={() => setShowSettings(true)}
+                className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-1"
+              >
+                <Settings size={16} />
+                <span className="hidden sm:inline">{t.customize}</span>
+              </button>
+              <button
+                onClick={handleRejectAll}
+                className="px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors"
+              >
+                {t.rejectAll}
+              </button>
+              <button
+                onClick={handleAcceptAll}
+                className="px-4 py-2 text-sm text-white bg-primary-600 hover:bg-primary-700 rounded-lg font-medium transition-colors flex items-center gap-1"
+              >
+                <Check size={16} />
+                {t.acceptAll}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal de configuració (només quan es clica "Configurar") */}
+      {showSettings && (
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-2xl max-w-md w-full overflow-hidden">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <Cookie className="text-amber-500" size={20} />
+                <h3 className="font-semibold text-gray-900">{t.customize}</h3>
               </div>
-              <div className="pt-1">
-                <div className="w-10 h-6 bg-primary-500 rounded-full flex items-center justify-end px-1">
+              <button 
+                onClick={() => setShowSettings(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Opcions */}
+            <div className="p-4 space-y-4">
+              {/* Necessary */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-medium text-gray-900 text-sm">{t.necessary}</span>
+                  <p className="text-xs text-gray-500">{t.necessaryDesc}</p>
+                </div>
+                <div className="w-10 h-6 bg-primary-500 rounded-full flex items-center justify-end px-1 opacity-50 cursor-not-allowed">
                   <div className="w-4 h-4 bg-white rounded-full shadow"></div>
                 </div>
               </div>
-            </div>
 
-            {/* Analytics */}
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <span className="font-medium text-gray-900">{t.analytics}</span>
-                <p className="text-xs text-gray-500 mt-1">{t.analyticsDesc}</p>
+              {/* Analytics */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-medium text-gray-900 text-sm">{t.analytics}</span>
+                  <p className="text-xs text-gray-500">{t.analyticsDesc}</p>
+                </div>
+                <button
+                  onClick={() => setConsent(prev => ({ ...prev, analytics: !prev.analytics }))}
+                  className={`w-10 h-6 rounded-full flex items-center px-1 transition-colors ${
+                    consent.analytics ? 'bg-primary-500 justify-end' : 'bg-gray-300 justify-start'
+                  }`}
+                >
+                  <div className="w-4 h-4 bg-white rounded-full shadow"></div>
+                </button>
               </div>
-              <button
-                onClick={() => setConsent(prev => ({ ...prev, analytics: !prev.analytics }))}
-                className={`w-10 h-6 rounded-full flex items-center px-1 transition-colors ${
-                  consent.analytics ? 'bg-primary-500 justify-end' : 'bg-gray-300 justify-start'
-                }`}
-              >
-                <div className="w-4 h-4 bg-white rounded-full shadow"></div>
-              </button>
-            </div>
 
-            {/* Marketing */}
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex-1">
-                <span className="font-medium text-gray-900">{t.marketing}</span>
-                <p className="text-xs text-gray-500 mt-1">{t.marketingDesc}</p>
+              {/* Marketing */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-medium text-gray-900 text-sm">{t.marketing}</span>
+                  <p className="text-xs text-gray-500">{t.marketingDesc}</p>
+                </div>
+                <button
+                  onClick={() => setConsent(prev => ({ ...prev, marketing: !prev.marketing }))}
+                  className={`w-10 h-6 rounded-full flex items-center px-1 transition-colors ${
+                    consent.marketing ? 'bg-primary-500 justify-end' : 'bg-gray-300 justify-start'
+                  }`}
+                >
+                  <div className="w-4 h-4 bg-white rounded-full shadow"></div>
+                </button>
               </div>
-              <button
-                onClick={() => setConsent(prev => ({ ...prev, marketing: !prev.marketing }))}
-                className={`w-10 h-6 rounded-full flex items-center px-1 transition-colors ${
-                  consent.marketing ? 'bg-primary-500 justify-end' : 'bg-gray-300 justify-start'
-                }`}
-              >
-                <div className="w-4 h-4 bg-white rounded-full shadow"></div>
-              </button>
             </div>
-          </div>
-        )}
 
-        {/* Buttons */}
-        <div className="p-6 pt-4 border-t border-gray-100">
-          {showSettings ? (
-            <div className="flex gap-3">
+            {/* Footer */}
+            <div className="p-4 border-t border-gray-100 flex gap-2">
               <button
                 onClick={() => setShowSettings(false)}
-                className="flex-1 px-4 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-colors"
+                className="flex-1 px-4 py-2 text-sm text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-medium transition-colors"
               >
-                ← {lang === 'es' ? 'Volver' : lang === 'ca' ? 'Tornar' : 'Back'}
+                {lang === 'es' ? 'Cancelar' : lang === 'ca' ? 'Cancel·lar' : 'Cancel'}
               </button>
               <button
                 onClick={handleSavePreferences}
-                className="flex-1 px-4 py-3 text-white bg-primary-600 hover:bg-primary-700 rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-2 text-sm text-white bg-primary-600 hover:bg-primary-700 rounded-lg font-medium transition-colors flex items-center justify-center gap-1"
               >
-                <Check size={18} />
+                <Check size={16} />
                 {t.save}
               </button>
             </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="flex gap-3">
-                <button
-                  onClick={handleRejectAll}
-                  className="flex-1 px-4 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-xl font-medium transition-colors"
-                >
-                  {t.rejectAll}
-                </button>
-                <button
-                  onClick={handleAcceptAll}
-                  className="flex-1 px-4 py-3 text-white bg-primary-600 hover:bg-primary-700 rounded-xl font-medium transition-colors flex items-center justify-center gap-2"
-                >
-                  <Check size={18} />
-                  {t.acceptAll}
-                </button>
-              </div>
-              <button
-                onClick={() => setShowSettings(true)}
-                className="w-full px-4 py-2 text-gray-500 hover:text-gray-700 text-sm font-medium transition-colors flex items-center justify-center gap-2"
-              >
-                <Settings size={16} />
-                {t.customize}
-              </button>
-            </div>
-          )}
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
