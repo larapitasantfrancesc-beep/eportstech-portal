@@ -143,6 +143,20 @@
           -ms-overflow-style: none;
           scrollbar-width: none;
       }
+      
+      /* Eliminar overscroll bounce a tots els navegadors */
+      html, body {
+        overscroll-behavior: none;
+        overflow-x: hidden;
+      }
+      
+      /* Assegurar que el fons cobreix tot */
+      html {
+        background-color: #0f172a; /* slate-900 - color del footer per scroll baix */
+      }
+      body {
+        background-color: white;
+      }
     </style>
 
     <!-- ============================================ -->
@@ -420,7 +434,7 @@
     </script>
 
   </head>
-  <body class="bg-slate-50 text-slate-900 antialiased">
+  <body class="bg-white text-slate-900 antialiased">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FZQ3G7N"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

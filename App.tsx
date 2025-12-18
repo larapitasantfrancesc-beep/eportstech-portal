@@ -199,7 +199,7 @@ const App: React.FC = () => {
   return (
     <HashRouter>
       <RouteTracker />
-      <div className="min-h-screen flex flex-col font-sans">
+      <div className="min-h-screen flex flex-col font-sans bg-white overflow-x-hidden">
         <Navbar currentLang={language} setLanguage={setLanguage} logoUrl={brandConfig.navLogo} />
         
         <Routes>
