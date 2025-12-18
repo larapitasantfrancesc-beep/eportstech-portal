@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { HashRouter, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ServicesSection from './components/ServicesSection';
@@ -8,6 +8,7 @@ import ContactForm from './components/ContactForm';
 import Chatbot from './components/Chatbot';
 import SolutionsConfigurator from './components/SolutionsConfigurator';
 import NeedsAssessment from './components/NeedsAssessment';
+import Footer from './components/Footer';
 import AdminDashboard from './pages/AdminDashboard';
 import SyncPage from './pages/SyncPage';
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -17,7 +18,6 @@ import CookieConsent from './components/CookieConsent';
 import { Language, ConfiguratorItem, BrandConfig, Service } from './types';
 import { initGA, trackPageView } from './services/analytics';
 import { useBrandConfigWithCache } from './hooks/useBrandConfigWithCache';
-import { Lock } from 'lucide-react';
 
 // Component to handle route tracking
 const RouteTracker: React.FC = () => {
@@ -53,10 +53,12 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
     setCustomMessage(msg);
     setPrefilledService('Virtual Advisor Recommendations');
 
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleConfiguratorRequest = (selectedItems: ConfiguratorItem[]) => {
@@ -124,12 +126,6 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
       }
   };
 
-  const footerLogo = brandConfig.footerLogo || "/logo-white.png";
-  const privacyText = brandConfig.footer?.privacyText?.[lang] || "Privacy Policy";
-  const legalText = brandConfig.footer?.legalText?.[lang] || "Legal Notice";
-  const cookiesText = brandConfig.footer?.cookiesText?.[lang] || "Cookies";
-  const copyrightText = brandConfig.footer?.copyrightText?.[lang] || `EportsTech © ${new Date().getFullYear()}`;
-
   return (
     <>
       <Hero lang={lang} config={brandConfig.hero} onConsultationRequest={handleConsultationRequest} />
@@ -145,46 +141,8 @@ const HomePage: React.FC<{ lang: Language, brandConfig: BrandConfig }> = ({ lang
           contactPhone={brandConfig.contactPhone}
       />
       
-      <footer className="bg-slate-900 text-slate-400 py-12">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
-          {/* ✅ Logo amb enllaç a grupoeacom.com */}
-          <div className="mb-8">
-              <a 
-                href="https://grupoeacom.com/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                title="Grupo EACOM"
-              >
-                <img 
-                    src={footerLogo} 
-                    alt="Eports Tech - Grupo EACOM" 
-                    className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity cursor-pointer"
-                    onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                    }}
-                />
-              </a>
-          </div>
-
-          <p className="mb-6 text-sm opacity-80">{copyrightText}</p>
-          
-          {/* ✅ Links centrats */}
-          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 text-sm">
-            <Link to="/privacy" className="hover:text-white transition-colors">{privacyText}</Link>
-            <span className="text-slate-600 hidden sm:inline">|</span>
-            <Link to="/legal" className="hover:text-white transition-colors">{legalText}</Link>
-            <span className="text-slate-600 hidden sm:inline">|</span>
-            <Link to="/cookies" className="hover:text-white transition-colors">{cookiesText}</Link>
-          </div>
-          
-          {/* Admin link separat */}
-          <div className="mt-6">
-            <Link to="/admin" className="text-slate-700 hover:text-slate-500 transition-colors" title="Acceso Corporativo">
-                <Lock size={12} />
-            </Link>
-          </div>
-        </div>
-      </footer>
+      {/* Footer Component */}
+      <Footer lang={lang} brandConfig={brandConfig} />
     </>
   );
 };
@@ -225,14 +183,13 @@ const App: React.FC = () => {
   return (
     <HashRouter>
       <RouteTracker />
-      <div className="min-h-screen flex flex-col font-sans bg-white overflow-x-hidden">
+      <div className="min-h-screen flex flex-col font-sans bg-white">
         <Navbar currentLang={language} setLanguage={setLanguage} logoUrl={brandConfig.navLogo} />
         
         <Routes>
           <Route path="/" element={<HomePage lang={language} brandConfig={brandConfig} />} />
           <Route path="/sync" element={<SyncPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          {/* ✅ Noves rutes per pàgines legals */}
           <Route path="/privacy" element={<PrivacyPolicy lang={language} />} />
           <Route path="/cookies" element={<CookiesPolicy lang={language} />} />
           <Route path="/legal" element={<LegalNotice lang={language} />} />
