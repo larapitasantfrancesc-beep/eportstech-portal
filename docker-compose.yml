@@ -1,0 +1,51 @@
+# docker-compose.yml
+# Desplegament amb Docker Compose per EportsTech Portal
+
+version: '3.8'
+
+services:
+  eportstech:
+    build: .
+    container_name: eportstech-portal
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Supabase (OBLIGATORI)
+      - VITE_SUPABASE_URL=${VITE_SUPABASE_URL}
+      - VITE_SUPABASE_ANON_KEY=${VITE_SUPABASE_ANON_KEY}
+      # Google AI - Chatbot (OBLIGATORI)
+      - VITE_GOOGLE_GEMINI_API_KEY=${VITE_GOOGLE_GEMINI_API_KEY}
+      # Google Analytics (OPCIONAL)
+      - VITE_GA_MEASUREMENT_ID=${VITE_GA_MEASUREMENT_ID}
+      # Email - Notificacions (OPCIONAL)
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - FROM_EMAIL=${FROM_EMAIL}
+      # Admin (OPCIONAL)
+      - VITE_ADMIN_EMAIL=${VITE_ADMIN_EMAIL}
+      - VITE_ADMIN_PASSWORD=${VITE_ADMIN_PASSWORD}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    # Recursos (ajustar segons necessitat)
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+# Per desenvolupament local amb hot-reload
+# docker-compose -f docker-compose.yml -f docker-compose.dev.yml up

@@ -1,0 +1,58 @@
+{
+  "name": "EportsTech - Solucions Intel·ligents",
+  "short_name": "EportsTech",
+  "description": "Empresa de telecomunicacions i serveis IT a les Terres de l'Ebre",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0284c7",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "ca",
+  "categories": ["business", "utilities"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Contactar",
+      "short_name": "Contacte",
+      "description": "Contacta amb nosaltres",
+      "url": "/#contact",
+      "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Serveis",
+      "short_name": "Serveis",
+      "description": "Veure els nostres serveis",
+      "url": "/#services",
+      "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+[build]
+  command = "npm install && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+  # IMPORTANT: Les variables VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY i 
+  # VITE_GOOGLE_GEMINI_API_KEY s'han de configurar al dashboard de Netlify:
+  # Site settings > Environment variables
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  

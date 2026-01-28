@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    
+    <!-- ============================================ -->
+    <!-- PRIMARY META TAGS -->
+    <!-- ============================================ -->
+    <title>EportsTech | Solucions Intel·ligents de Telecomunicacions a Espanya i Europa</title>
+    <meta name="title" content="EportsTech | Solucions Intel·ligents de Telecomunicacions" />
+    <meta name="description" content="Empresa de telecomunicacions i serveis IT a Espanya i Europa. Fibra òptica, ciberseguretat, telefonia VoIP, networking, consultoria tecnològica i sistemes IoT per empreses. Partners a UK i Àustria." />
+    <meta name="keywords" content="telecomunicacions espanya, fibra optica empreses, ciberseguretat, telefonia voip, networking, consultoria IT, IoT, eports internet, telecomunicacions europa" />
+    <meta name="author" content="EportsTech" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Catalan, Spanish, English" />
+    <meta name="geo.region" content="ES" />
+    <meta name="geo.placename" content="Spain" />
+    
+    <!-- ============================================ -->
+    <!-- FAVICON - SAFARI COMPATIBLE + DARK MODE -->
+    <!-- ============================================ -->
+    <!-- Light Mode (finestra clara) → Favicon blau fosc -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" media="(prefers-color-scheme: light)" />
+    
+    <!-- Dark Mode (finestra fosca) → Favicon blanc -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-dark-32x32.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-dark-16x16.png" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/x-icon" href="/favicon-dark.ico" media="(prefers-color-scheme: dark)" />
+    
+    <!-- Apple Touch Icon (iOS no suporta dark mode per icons) -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- Safari Pinned Tab (macOS Safari) -->
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#0284c7" />
+    
+    <!-- Microsoft Tiles -->
+    <meta name="msapplication-TileColor" content="#0284c7" />
+    <meta name="theme-color" content="#0284c7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- ============================================ -->
+    <!-- OPEN GRAPH / FACEBOOK -->
+    <!-- ============================================ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://eportstech.netlify.app/" />
+    <meta property="og:title" content="EportsTech | Solucions Intel·ligents de Telecomunicacions" />
+    <meta property="og:description" content="Empresa de telecomunicacions i serveis IT a Espanya i Europa. Fibra òptica, ciberseguretat, telefonia VoIP i consultoria tecnològica." />
+    <meta property="og:image" content="https://eportstech.netlify.app/og-image.png" />
+    <meta property="og:locale" content="ca_ES" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    
+    <!-- ============================================ -->
+    <!-- TWITTER -->
+    <!-- ============================================ -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://eportstech.netlify.app/" />
+    <meta property="twitter:title" content="EportsTech | Solucions Intel·ligents de Telecomunicacions" />
+    <meta property="twitter:description" content="Empresa de telecomunicacions i serveis IT a Espanya i Europa. Fibra òptica, ciberseguretat, telefonia VoIP i consultoria tecnològica." />
+    <meta property="twitter:image" content="https://eportstech.netlify.app/og-image.png" />
+    
+    <!-- ============================================ -->
+    <!-- CANONICAL -->
+    <!-- ============================================ -->
+    <link rel="canonical" href="https://eportstech.netlify.app/" />
+    
+    <!-- ============================================ -->
+    <!-- GOOGLE CONSENT MODE V2 (GDPR) -->
+    <!-- ============================================ -->
+    <script>
+      // Google Consent Mode v2 - Default state (abans de carregar gtag.js)
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+      // Estat per defecte: tot denegat fins que l'usuari accepti
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'functionality_storage': 'granted',
+        'personalization_storage': 'denied',
+        'security_storage': 'granted',
+        'wait_for_update': 500
+      });
+      
+      // Activar URL passthrough per preservar informació de campanya
+      gtag('set', 'url_passthrough', true);
+      
+      // Activar redaction per ads
+      gtag('set', 'ads_data_redaction', true);
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5FZQ3G7N');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- ============================================ -->
+    <!-- FONTS & STYLES -->
+    <!-- ============================================ -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                800: '#075985',
+                900: '#0c4a6e',
+              },
+              secondary: {
+                500: '#64748b',
+                900: '#0f172a',
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+      }
+      .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+      }
+      
+      /* Eliminar overscroll bounce a tots els navegadors */
+      html, body {
+        overscroll-behavior: none;
+        /* NO posar overflow-x: hidden aquí - trenca scroll trackpad Chrome/Mac */
+      }
+      
+      /* Amagar overflow horitzontal NOMÉS al contenidor, no al viewport */
+      #root {
+        overflow-x: hidden;
+      }
+      
+      /* Assegurar que el fons cobreix tot */
+      html {
+        background-color: #0f172a; /* slate-900 - color del footer per scroll baix */
+      }
+      body {
+        background-color: white;
+      }
+    </style>
+
+    <!-- ============================================ -->
+    <!-- SCHEMA.ORG - ORGANIZATION (AEO) -->
+    <!-- ============================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://eportstech.netlify.app/#organization",
+      "name": "EportsTech",
+      "alternateName": ["Eports Tech", "E-ports Tech", "Eports Internet"],
+      "description": "Empresa de telecomunicacions i serveis IT especialitzada en solucions tecnològiques per empreses a Espanya i Europa. Oferim fibra òptica, ciberseguretat, telefonia VoIP, networking, consultoria tecnològica i sistemes IoT. Comptem amb partners estratègics al Regne Unit i Àustria.",
+      "url": "https://eportstech.netlify.app",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://eportstech.netlify.app/logo-blue.png",
+        "width": 300,
+        "height": 100
+      },
+      "image": "https://eportstech.netlify.app/og-image.png",
+      "telephone": "+34977353735",
+      "email": "hola@eportsinternet.com",
+      "foundingDate": "2020",
+      "areaServed": [
+        {
+          "@type": "Country",
+          "name": "Spain",
+          "alternateName": "España"
+        },
+        {
+          "@type": "Country",
+          "name": "United Kingdom"
+        },
+        {
+          "@type": "Country",
+          "name": "Austria"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "European Union"
+        }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Tortosa",
+        "addressRegion": "Tarragona",
+        "postalCode": "43500",
+        "addressCountry": "ES"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.8125,
+        "longitude": 0.5219
+      },
+      "sameAs": [
+        "https://www.linkedin.com/company/eportstech",
+        "https://twitter.com/eportstech",
+        "https://www.facebook.com/eportstech",
+        "https://eportsinternet.com"
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+34977353735",
+          "contactType": "customer service",
+          "availableLanguage": ["Catalan", "Spanish", "English", "German"],
+          "areaServed": ["ES", "GB", "AT"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+34977353735",
+          "contactType": "technical support",
+          "availableLanguage": ["Catalan", "Spanish", "English"],
+          "areaServed": ["ES", "GB", "AT"]
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Serveis de Telecomunicacions i IT",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Fibra Òptica Empresarial",
+              "description": "Connexió de fibra òptica simètrica fins a 10Gbps per empreses a tot Espanya."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Ciberseguretat",
+              "description": "Auditories de seguretat, firewall, EDR, protecció contra ransomware i formació en seguretat per empleats."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Telefonia VoIP",
+              "description": "Centraletes virtuals, telefonia IP, numeració nacional i internacional, integració amb CRM."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Networking i Infraestructura",
+              "description": "Disseny i implementació de xarxes empresarials, WiFi gestionat, VPN, SD-WAN."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Consultoria IT",
+              "description": "Transformació digital, assessorament tecnològic, migració al núvol i optimització de processos."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Sistemes IoT",
+              "description": "Solucions IoT per eficiència energètica, monitorització industrial i automatització."
+            }
+          }
+        ]
+      }
+    }
+    </script>
+
+    <!-- ============================================ -->
+    <!-- SCHEMA.ORG - LOCAL BUSINESS (AEO) -->
+    <!-- ============================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "@id": "https://eportstech.netlify.app/#localbusiness",
+      "name": "EportsTech",
+      "description": "Serveis de telecomunicacions i IT per empreses a Espanya i Europa",
+      "url": "https://eportstech.netlify.app",
+      "telephone": "+34977353735",
+      "priceRange": "€€",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Tortosa",
+        "addressRegion": "Tarragona",
+        "postalCode": "43500",
+        "addressCountry": "ES"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.8125,
+        "longitude": 0.5219
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "45"
+      }
+    }
+    </script>
+
+    <!-- ============================================ -->
+    <!-- SCHEMA.ORG - FAQ PAGE (AEO - VERY IMPORTANT) -->
+    <!-- ============================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Quins serveis de telecomunicacions ofereix EportsTech?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EportsTech ofereix una àmplia gamma de serveis: fibra òptica simètrica fins a 10Gbps, radiofreqüència, connexions 4G/5G, telefonia VoIP amb centraletes virtuals, ciberseguretat (auditories, firewall, EDR), networking empresarial, WiFi gestionat, VPN, SD-WAN, consultoria IT per transformació digital, i sistemes IoT per eficiència energètica i monitorització."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "On opera EportsTech? Quina és la seva zona de cobertura?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EportsTech opera a tot el territori nacional espanyol i a Europa. La seu central està a Tortosa (Catalunya), però oferim serveis a totes les comunitats autònomes d'Espanya. A més, comptem amb partners estratègics al Regne Unit i Àustria per oferir solucions a clients europeus."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "EportsTech ofereix fibra òptica per empreses a tot Espanya?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, EportsTech ofereix connexions de fibra òptica simètrica professional per empreses amb velocitats fins a 10Gbps a tot el territori espanyol. Oferim SLA garantit, IP fixa, i suport tècnic especialitzat. També arribem a zones rurals on altres operadors no tenen cobertura."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quins serveis de ciberseguretat ofereix EportsTech?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EportsTech ofereix serveis complets de ciberseguretat: auditories de seguretat, implementació de firewalls de nova generació, solucions EDR (Endpoint Detection and Response), protecció contra ransomware, backup segur, formació en seguretat per empleats, i monitorització 24/7 de la infraestructura."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "EportsTech té presència internacional?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, EportsTech té presència internacional gràcies als seus partners estratègics al Regne Unit i Àustria. Això ens permet oferir solucions de telecomunicacions i IT a empreses europees, especialment aquelles amb operacions transfrontereres o que necessiten connectivitat internacional."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Quina diferència hi ha entre EportsTech i Eports Internet?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EportsTech és la divisió empresarial del grup, especialitzada en solucions IT i telecomunicacions per empreses (fibra, ciberseguretat, VoIP, consultoria). Eports Internet (eportsinternet.com) és la divisió residencial, enfocada en connexions de fibra i serveis per a particulars i llars."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- ============================================ -->
+    <!-- SCHEMA.ORG - BREADCRUMB (AEO) -->
+    <!-- ============================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inici",
+          "item": "https://eportstech.netlify.app/"
+        }
+      ]
+    }
+    </script>
+
+    <!-- ============================================ -->
+    <!-- SCHEMA.ORG - WEBSITE (AEO) -->
+    <!-- ============================================ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://eportstech.netlify.app/#website",
+      "url": "https://eportstech.netlify.app",
+      "name": "EportsTech",
+      "description": "Solucions Intel·ligents de Telecomunicacions i IT per empreses a Espanya i Europa",
+      "publisher": {
+        "@id": "https://eportstech.netlify.app/#organization"
+      },
+      "inLanguage": ["ca", "es", "en", "de", "fr", "it"],
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://eportstech.netlify.app/?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+  </head>
+  <body class="bg-white text-slate-900 antialiased">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FZQ3G7N"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
